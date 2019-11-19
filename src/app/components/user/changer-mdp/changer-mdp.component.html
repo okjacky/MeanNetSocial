@@ -1,0 +1,26 @@
+<div class="containerBody" fxLayout="row" style="width:400px;" fxLayoutAlign="center center" >
+  <mat-card style="width: 400px;" >
+    <mat-card-header>
+      <mat-card-title>Changer votre mot de passe</mat-card-title>
+      <mat-card-subtitle>Saisissez votre nouveau mot de passe <i>net</i><b>Social</b>.</mat-card-subtitle>
+    </mat-card-header>
+    <form [formGroup] = "nouveauMdpForm" fxLayout="column" >
+      <mat-form-field>
+        <input formControlName="password" matInput placeholder="password" >
+        <mat-error *ngIf="nouveauMdpForm.get('password').hasError('minlength') && !nouveauMdpForm.get('password').hasError('required')">
+          6 caractères Min.
+        </mat-error>
+        <mat-error *ngIf="nouveauMdpForm.get('password').hasError('required')">
+          Veuillez saisir votre password
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field >
+        <input formControlName="confirmerPassword" matInput placeholder="confirmer password" required>
+        <mat-error>Password non identique</mat-error>
+        <mat-label><mat-icon>fingerprint</mat-icon> <i>Confirm</i> <b>Password</b></mat-label>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit" (click)="envoyerNouveauMdp()" [disabled]="nouveauMdpForm.invalid">
+        Enregistrer <mat-icon>location_searching</mat-icon></button>
+    </form>
+  </mat-card>
+</div>

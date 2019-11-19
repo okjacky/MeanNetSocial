@@ -1,0 +1,121 @@
+<div *ngIf="isAdmin" style="border: 1px solid red; margin-top: 5px" fxLayoutAlign="center">
+  <h2>Welcome Admin</h2>
+</div>
+<div class="containerBody" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px"  >
+  <div fxLayout="column" fxFlex="30%" fxLayoutGap="5PX">
+    <mat-card>
+      <form [formGroup] ="searchForm" >
+        <mat-form-field style="width: 100%;" appearance="fill">
+          <span matPrefix>Recherche: &nbsp;</span>
+          <input type="text" matInput formControlName="textSearch"  placeholder="">
+          <button matSuffix mat-icon-button  (click)="searchItem()">
+            <mat-icon >search</mat-icon>
+          </button>
+        </mat-form-field>
+      </form>
+    </mat-card>
+    <mat-card >
+      <h3>Listes des membres</h3>
+      <p>membres connectés</p>
+      <mat-divider></mat-divider>
+      <h3>Messages</h3>
+      <p>Nombre de message</p>
+      <ul *ngFor="let member of userFromApi; let i = index">
+        <li>{{i}} {{member._id}}</li>
+      </ul>
+    </mat-card>
+
+  </div>
+  <!-------------------------SearchUser-------------------------->
+  <div *ngIf="userFromSearch.length > 0" fxLayout="column" fxLayoutGap="3%" fxFlex="70%">
+    <mat-nav-list>
+      <mat-list-item *ngFor="let ami of userFromSearch">
+        <mat-divider></mat-divider>
+        <span matListAvatar [routerLink]="['/profil', ami._id]">
+          <ngx-avatar
+            mat-card-avatar
+            name={{ami.pseudo}}
+            src={{ami.image}}
+            value="28%"
+            size="50" [round]="true">
+          </ngx-avatar>
+        </span>
+        <i matLine [routerLink]="['/profil', ami._id]">{{ami.prenom}}</i>
+        <h3 matLine [routerLink]="['/profil', ami._id]">{{ami.nom}}</h3>
+        <button mat-icon-button *ngIf="isAdmin" [routerLink]="['/editUser', ami._id]" profil>
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button >
+          <mat-icon>mail_outline</mat-icon>
+        </button>
+        <button mat-icon-button >
+          <mat-icon>chat</mat-icon>
+        </button>
+        <button mat-icon-button *ngIf="isAdmin" >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-nav-list>
+  </div>
+  <!-----------------------------a propos----------------------------->
+  <div *ngIf="userFromSearch.length == 0" fxLayout="column" fxLayoutGap="3%" fxFlex="70%">
+    <div *ngIf="currentUser.request.length > 0">
+      <mat-grid-list cols="3" rowHeight="130px" gutterSize="10px">
+        <mat-grid-tile
+          *ngFor="let invitation of currentUser.request"
+          [colspan]="3"
+          [rowspan]="1"
+          [style.background] = "'#424242'">
+          <div fxLayout="column" style=" width: 100%; padding: 15px;" fxLayoutAlign="start start" >
+            <h3>Demande de connexion</h3>
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="3%">
+              <span mat-button [routerLink]="['/profil', invitation.userId]">
+                <ngx-avatar class="pointer"
+                            mat-card-avatar
+                            name={{invitation.userNom}}
+                            src={{invitation.image}}
+                            value="28%"
+                            size="50" [round]="true">
+                </ngx-avatar>
+              </span>
+              <i>{{invitation.userNom}} vous envoie une demande de connexion.</i>
+              <button mat-stroked-button color="primary" (click)="deleteRequest(invitation)">Refuser</button>
+              <button mat-raised-button color="primary" (click)="acceptRequest(invitation)">accepter</button>
+            </div>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+    <mat-card>
+      <mat-card-header>
+        <h3 >A propos</h3>
+      </mat-card-header>
+
+    </mat-card>
+    <mat-grid-list cols="9" rowHeight="200px" gutterSize="10px" style="overflow: auto; min-height: 200px;">
+      <mat-grid-tile
+        *ngFor="let member of userFromApi"
+        [colspan]="3"
+        [rowspan]="1"
+        [style.background] = "'#424242'">
+        <div fxLayout="column" style="width: 100%; padding: 5px;" fxLayoutAlign="center center" fxLayoutGap="3%">
+          <span mat-button [routerLink]="['/profil', member._id]">
+            <ngx-avatar class="pointer"
+                        mat-card-avatar
+                        name={{member.pseudo}}
+                        src={{member.image}}
+                        value="28%"
+                        size="60" [round]="true">
+            </ngx-avatar>
+          </span>
+          <b class="pointer" [routerLink]="['/profil', member._id]">{{member.prenom}}</b>
+          <i class="pointer" [routerLink]="['/profil', member._id]">{{member.presentation}}</i>
+          <div fxLayout="row" fxLayoutGap="3%">
+            <button *ngIf="isAdmin"  color="primary" mat-stroked-button (click)="deleteUser(member)">Suprimer User</button>
+          </div>
+
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</div>

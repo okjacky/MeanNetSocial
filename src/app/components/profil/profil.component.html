@@ -1,0 +1,80 @@
+<div *ngIf="isAdmin" style="border: 1px solid red; margin-top: 5px" fxLayoutAlign="center">
+  <h2>Welcome Admin</h2>
+</div>
+<div class="containerBody" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20PX"  >
+  <!-----------userId Profil--------------------->
+  <div fxLayout="column" fxFlex="35%" fxLayoutGap="5PX">
+    <mat-card class="example-card" class="mat-elevation-z4">
+      <mat-card-header fxLayoutGap="3%">
+        <div mat-card-avatar>
+          <span>
+            <ngx-avatar
+              mat-card-avatar
+              name={{member.pseudo}}
+              src={{member.image}}
+              value="28%"
+              size="50" [round]="true">
+            </ngx-avatar>
+          </span>
+        </div>
+        <mat-card-title>{{member.prenom}}</mat-card-title>
+        <mat-card-subtitle>{{member.presentation}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <mat-card-content >
+        <mat-list >
+          <mat-list-item >
+            <mat-icon matListIcon>child_care</mat-icon>
+            <h4 matLine>age</h4>
+            <p matSuffix="" > {{member.age}} </p>
+          </mat-list-item>
+          <mat-list-item >
+            <mat-icon matListIcon>contact_mail</mat-icon>
+            <h4 matLine>email</h4>
+            <p matSuffix color="green" > {{member.email}} </p>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <mat-divider></mat-divider>
+        <a mat-button [routerLink] = "['/editUser', member._id]" *ngIf= "currentUser._id === member._id? true : false" >Modifier <mat-icon>edit</mat-icon></a>
+        <button mat-button  *ngIf="isAdmin">Suprimer</button>
+      </mat-card-actions>
+    </mat-card>
+    <!-----------liste des amis------------------>
+    <mat-card class="example-card">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>Mes Amis</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          Liste des nom here ... ngif
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button>Voir son profil</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <!---------------UserId Posts--------------->
+  <div fxLayout="column" fxFlex="60%">
+    <mat-card>
+      <mat-card-content>
+        <p>Hac recipiant additumque quoniam mundi morborum professio quam medendi ad est remedium quos domum satis omnis videat est ad etiam. </p>
+
+      </mat-card-content>
+      <mat-card-actions align="end" fxLayout="row" fxLayoutGap=" 20px" >
+        <button mat-mini-fab color="primary">
+          <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon>
+        </button>
+        <button mat-mini-fab color="primary">
+          <mat-icon class="example-icon" aria-hidden="false" aria-label="Example delete icon">delete</mat-icon>
+        </button>
+
+
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+</div>

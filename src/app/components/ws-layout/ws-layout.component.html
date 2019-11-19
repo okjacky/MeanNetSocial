@@ -1,0 +1,13 @@
+<div *ngIf="isAdmin" style="border: 1px solid red; margin-top: 5px" fxLayoutAlign="center">
+  <h2>Welcome Admin</h2>
+</div>
+<div  style="width:100%;" fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="30px">
+  <div class="containerBody" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" >
+    <div fxLayout="column" fxFlex="35%" fxLayoutGap="2%">
+      <app-ws-online [current$]="chatWith" [usersOnline$]="userOnline" (newConv)="onNewConv($event)"></app-ws-online>
+    </div>
+    <div fxLayout="column" fxFlex="60%" fxLayoutGap="2%">
+      <app-ws-chat></app-ws-chat>
+  </div>
+
+</div>

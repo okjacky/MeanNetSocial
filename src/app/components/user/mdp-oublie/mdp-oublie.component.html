@@ -1,0 +1,25 @@
+<div class="containerBody" fxLayout="row" style="width:400px;" fxLayoutAlign="center center" >
+  <mat-card style="width: 400px;" >
+    <mat-card-header>
+      <mat-card-title>Mot de Passe Oublié</mat-card-title>
+      <mat-card-subtitle>Saisissez l'adresse e-mail associé à votre compte <i>net</i><b>Social</b>.</mat-card-subtitle>
+    </mat-card-header>
+    <form [formGroup] = "userService.mdpoublieForm" fxLayout="column" >
+      <mat-form-field>
+        <input formControlName="email" matInput placeholder="email" >
+        <mat-error *ngIf="userService.mdpoublieForm.get('email').hasError('email') && !userService.mdpoublieForm.get('email').hasError('required')">
+          Saisir une adress email valide
+        </mat-error>
+        <mat-error *ngIf="userService.mdpoublieForm.get('email').hasError('required')">
+          Email est obligatoire
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="accent" (click)="retourLogin()">Retour vers Login
+
+      </button>
+      <button mat-raised-button color="primary" type="submit" (click)="searchEmail()" [disabled]="userService.mdpoublieForm.invalid">
+        Envoyer <mat-icon>location_searching</mat-icon></button>
+    </form>
+  </mat-card>
+</div>

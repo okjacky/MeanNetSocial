@@ -1,0 +1,98 @@
+<div *ngIf="isAdmin" style="border: 1px solid red; margin-top: 5px" fxLayoutAlign="center">
+  <h2>Welcome Admin</h2>
+</div>
+<div  style="width:100%;" fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="30px">
+  <div class="containerBody" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" >
+    <div fxLayout="column" fxFlex="35%" fxLayoutGap="2%">
+      <!--------------searchBox---------------------->
+      <!--<mat-card>
+        <form [formGroup] ="searchForm" >
+          <mat-form-field style="width: 100%;" appearance="fill">
+            <span matPrefix>Recherche: &nbsp;</span>
+            <input type="text" matInput formControlName="textSearch" placeholder="">
+            <button matSuffix mat-icon-button  (click)="searchItem()">
+              <mat-icon >search</mat-icon>
+            </button>
+          </mat-form-field>
+        </form>
+      </mat-card>-->
+
+      <!-----------Messagerie--------------------->
+      <div style="width: 100%; border: 1px solid gray;">
+        <mat-list>
+          <mat-list-item>
+            <h3 matLine> Messageries </h3>
+            <i style="font-size: 12px">Nouvelle Conversation</i>
+            <button mat-icon-button routerLink="/newConversation"
+                    MatTooltipModule="Nouvelle Conversation Group"
+                    aria-label="Button that displays a tooltip when focused or hovered over">
+
+              <mat-icon>post_add</mat-icon>
+            </button>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
+        <!-------------------Users Online------------------->
+        <h3 fxLayoutAlign="center">USER ONLINE</h3>
+        <div fxLayoutAlign="center" *ngIf="!userOnline">
+          <mat-spinner></mat-spinner>
+        </div>
+        <mat-divider></mat-divider>
+        <mat-nav-list style="overflow: auto; width: 100%; height: 300px;">
+          <mat-list-item *ngFor="let userLive of userOnline" [routerLink]= "['/newChat', userLive.nom, userLive.userId]">
+            <mat-divider></mat-divider>
+            <span matListAvatar >
+              <ngx-avatar
+                mat-card-avatar
+                name={{userLive.nom}}
+                src= {{userLive.image}}
+                value="28%"
+                size="50" [round]="true">
+              </ngx-avatar>
+            </span>
+            <i matLine >{{userLive.nom}}</i>
+            <i matLine >{{userLive.nom}}</i>
+            <button mat-icon-button>
+              <mat-icon>chat</mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-nav-list>
+        <!-----------Liste Conversations--------------------->
+        <div fxLayoutAlign="center" *ngIf="!conversationsList && noMsg">
+          <mat-spinner></mat-spinner>
+        </div>
+        <div fxLayoutAlign="center" *ngIf="noMsg">
+          Pas de messages pour le moment ...
+        </div>
+        <mat-nav-list style="overflow: auto; width: 100%; height: 300px;">
+          <mat-list-item *ngFor="let conv1 of conversationsList" [routerLink]= "['/getConversation', conv1.conversationId, conv1.author.nom]">
+            <mat-divider></mat-divider>
+            <span matListAvatar >
+              <ngx-avatar
+                mat-card-avatar
+                name={{conv1.author.nom}}
+                src= {{conv1.author.image}}
+                value="28%"
+                size="50" [round]="true">
+              </ngx-avatar>
+            </span>
+
+            <i matLine >{{conv1.author.prenom}}</i>
+            <h3 matLine>{{conv1.author.nom}}</h3>
+            <button mat-icon-button (click)="deleteConversation(conv1.conversationId)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-nav-list>
+      </div>
+    </div>
+    <div fxLayout="column" fxFlex="60%" fxLayoutGap="2%">
+      <app-get-conversation *ngIf="isGetConversation" [currentUser$]="currentUser"></app-get-conversation>
+      <app-new-conversation *ngIf="isNewConversation" [currentUser$]="currentUser"></app-new-conversation>
+      <app-chat-with *ngIf="isChatWith"
+                     [currentUser$]="currentUser"></app-chat-with>
+      <app-new-chat-conversation [currentUser]="currentUser" *ngIf="isNewChat"></app-new-chat-conversation>
+    </div>
+  </div>
+
+</div>

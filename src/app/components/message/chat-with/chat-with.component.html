@@ -1,0 +1,52 @@
+<div style="width: 100%;  border: 1px solid gray;" fxLayout="column" fxLayoutGap="3%" >
+  <div style="width: 100%; padding: 15px;"  fxLayout="row" fxLayoutGap="3%" fxLayoutAlign="space-between">
+
+    <b> Chat entre  {{currentUser$.nom}} et {{chatWith}}</b>
+
+  </div>
+  <mat-divider></mat-divider>
+  <!---------------------display Msg--------------------->
+  <div  fxLayout="column" fxLayoutGap="3%" style="overflow: auto; height: 200px; padding: 15px;" class="msg-container">
+    <div fxLayout="row" fxLayoutGap="3%" fxLayoutAlign="start start" *ngFor="let chat of messagesList">
+      <span>
+        <ngx-avatar
+          mat-card-avatar
+          name={{chat.author.nom}}
+          src={{chat.author.image}}
+          value="28%"
+          size="35" [round]="true">
+        </ngx-avatar>
+      </span>
+      <div fxLayout="column">
+        <b>{{chat.author.prenom}} -- {{chat.author.nom}}</b>
+        <p>
+          {{chat.body}}
+        </p>
+        <mat-divider></mat-divider>
+      </div>
+
+    </div>
+  </div>
+  <!-----------------------Textarea----------------------->
+  <div style="padding: 15px; ">
+    <mat-divider></mat-divider>
+    <form [formGroup]="replyMessageForm" >
+      <mat-form-field style="width: 100%" appearance="fill">
+        <textarea matInput placeholder="Rédiger un message ..."
+                  formControlName="content"
+                  cdkTextareaAutosize
+                  cdkAutosizeMaxRows="5"
+                  #autosize="cdkTextareaAutosize">
+        </textarea>
+        <button color="primary"
+                mat-mini-fab
+                matSuffix
+                [disabled]="replyMessageForm.invalid"
+                (click)="replyMessage()">
+          <mat-icon>send</mat-icon>
+        </button>
+      </mat-form-field>
+    </form>
+  </div>
+
+</div>

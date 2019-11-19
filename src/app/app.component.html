@@ -1,0 +1,56 @@
+<div class="container" >
+  <mat-toolbar color="primary" >
+    <mat-toolbar-row mat-sidenav-container>
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon class="between-icon" aria-hidden="false" aria-label="Example delete icon">menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button routerLink="/login" mat-menu-item>
+          <mat-icon>https</mat-icon>
+          <span>Login</span>
+        </button>
+        <button routerLink="/detailsUser" mat-menu-item *ngIf="currentUser">
+          <mat-icon>face</mat-icon>
+          <span>Votre Profil</span>
+        </button>
+        <button mat-menu-item *ngIf="currentUser">
+          <mat-icon>edit</mat-icon>
+          <span>Posts</span>
+        </button>
+        <button mat-menu-item routerLink="/reseau" *ngIf="currentUser">
+          <mat-icon>people_alt</mat-icon>
+          <span>Réseau</span>
+        </button>
+        <button mat-menu-item routerLink="/message">
+          <mat-icon>mail_outline
+          </mat-icon>
+          <span>Messages</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>question_answer</mat-icon>
+          <span>Chat</span>
+        </button>
+      </mat-menu>
+      <div fxLayout="row" fxLayoutAlign="space-between" style="width: 100%;" >
+        <div fxLayout="row" >
+          <span class="between-icon" routerLink="/home">netSocial</span>
+          <div *ngIf="currentUser"  fxHide.xs >
+            <button mat-button routerLink="/home"><mat-icon>house</mat-icon></button>
+            <button mat-button routerLink="/detailsUser"><mat-icon>face</mat-icon></button>
+            <button mat-button routerLink="reseau"><mat-icon>people_alt</mat-icon></button>
+            <button mat-button routerLink="/message"><mat-icon>mail</mat-icon></button>
+            <button mat-button routerLink="/wsChat"><mat-icon>question_answer</mat-icon></button>
+          </div>
+        </div>
+        <button mat-raised-button routerLink="/login" *ngIf="!currentUser">Login<mat-icon class="between-icon" >lock</mat-icon></button>
+        <button mat-raised-button (click)="logout()" *ngIf="currentUser">Déconnexion<mat-icon class="between-icon" >eject</mat-icon></button>
+
+      </div>
+
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+
+  <router-outlet></router-outlet>
+</div>
+

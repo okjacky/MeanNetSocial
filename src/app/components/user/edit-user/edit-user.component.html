@@ -1,0 +1,100 @@
+<div *ngIf="isAdmin" style="border: 1px solid red; margin-top: 5px" fxLayoutAlign="center">
+  <h2>Welcome Admin</h2>
+</div>
+<div style="margin-top: 30px;" fxLayout="column" fxLayoutAlign="center center">
+  <mat-card style="width: 80%;" fxLayout="column">
+    <h2 mat-card-title fxLayoutAlign="end start">{{title}}</h2>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2%">
+      <div fxLayout="column" fxLayoutAlign="end end" fxLayoutGap="-25px">
+        <span>
+          <ngx-avatar
+            mat-card-avatar
+            name= {{memberUser.prenom}}
+            src={{memberUser.image}}
+            value="28%"
+            size="150" [round]="true">
+          </ngx-avatar>
+        </span>
+        <input type="file" accept="image/*" #uploadFile style="display: none" (change)="uploadImage($event)">
+        <button mat-mini-fab matTooltip="Modifier votre photo" (click)="uploadFile.click()"><mat-icon>add_a_photo</mat-icon> </button>
+
+      </div>
+
+      <div fxLayout="column" fxLayoutGap="0">
+        <h3>{{memberUser.prenom}}</h3>
+        <i><h3>{{memberUser.presentation}}</h3></i>
+      </div>
+
+    </div>
+    <div fxLayout="row" *ngIf="isAvatarFile" fxLayoutGap="3%">
+      <p>{{avatarFile.name}}</p>
+      <button mat-raised-button="" color="primary" (click)="updateAvatar()">Charger Image</button>
+    </div>
+  </mat-card>
+
+  <mat-card style="width:80%;" fxLayout="column">
+    <form [formGroup]="editForm"  fxLayout="row" fxLayout.xs="column" fxLayoutGap="3%" fxFlexAlign="start center">
+      <div fxLayout="column" fxLayoutGap="5px" fxFlex="37%">
+        <mat-radio-group formControlName="genre" fxLayoutGap="20px" >
+          <mat-radio-button value="Monsieur">Monsieur</mat-radio-button>
+          <mat-radio-button value="Madame">Madame</mat-radio-button>
+        </mat-radio-group>
+        <mat-form-field>
+          <input formControlName="prenom" matInput placeholder="Prénom" required>
+          <mat-error>Veuillez saisir votre prénom</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="nom" matInput placeholder="Nom" required>
+          <mat-error>Veuillez saisir votre Nom</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="pseudo" matInput placeholder="pseudo" required >
+          <mat-error>Veuillez saisir votre pseudo</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="email" matInput placeholder="email" required>
+          <mat-error *ngIf="editForm.get('email').hasError('email') && !editForm.get('email').hasError('required')">
+            Saisir une adress email valide
+          </mat-error>
+          <mat-error *ngIf="editForm.get('email').hasError('required')">
+            Email est obligatoire
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="age" matInput placeholder="age">
+          <mat-error>Veuillez saisir votre age</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Role</mat-label>
+          <mat-select formControlName="role" [disabled]="!isAdmin"  required>
+            <mat-option value= "Admin">Admin</mat-option>
+            <mat-option value= "User">User</mat-option>
+          </mat-select>
+          <mat-error *ngIf="editForm.hasError('required')">Donner un role</mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="column" fxLayoutGap="5px" fxFlex="60%">
+        <mat-form-field appearance="fill">
+          <mat-label>Ton adresse</mat-label>
+          <textarea formControlName="adresse" matInput placeholder="20 caractères Max"></textarea>
+          <mat-error>Veuillez saisir votre adresse</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" required>
+          <mat-label>Quelques mots sur toi !</mat-label>
+          <textarea formControlName="presentation" matInput placeholder="20 caractères Max"></textarea>
+          <mat-error>Veuillez saisir votre présentation</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Tes préférences...</mat-label>
+          <textarea formControlName="preferences" matInput placeholder="20 caractères Max"></textarea>
+          <mat-error>Veuillez saisir votre preferences</mat-error>
+        </mat-form-field>
+        <div fxLayout="row" style="width: 100%;" fxLayoutGap="3%">
+          <button mat-raised-button style="width: 50%;" type="submit" color="primary" (click)="goBack()" >Retour vers Login</button>
+          <button mat-raised-button style="width: 50%;" type="submit" color="primary" (click)="onSummit()" [disabled]="editForm.invalid">Enregistrer</button>
+        </div>
+
+      </div>
+    </form>
+  </mat-card>
+</div>

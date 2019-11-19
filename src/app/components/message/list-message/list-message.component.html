@@ -1,0 +1,51 @@
+<div style="width: 100%; " fxLayout="column">
+  <!--------------searchBox---------------------->
+  <mat-card>
+    <form [formGroup] ="searchForm" >
+      <mat-form-field style="width: 100%;" appearance="fill">
+        <span matPrefix>Recherche: &nbsp;</span>
+        <input type="text" matInput formControlName="textSearch" placeholder="">
+        <button matSuffix mat-icon-button  (click)="searchItem()">
+          <mat-icon >search</mat-icon>
+        </button>
+      </mat-form-field>
+    </form>
+  </mat-card>
+  <!-----------Messagerie--------------------->
+  <div style="width: 100%; border: 1px solid gray;">
+    <mat-list>
+      <mat-list-item>
+        <h3 matLine> Messageries </h3>
+        <i style="font-size: 12px">Nouvelle Conversation</i>
+        <button mat-icon-button
+                MatTooltipModule="Nouvelle Conversation Group"
+                aria-label="Button that displays a tooltip when focused or hovered over">
+
+          <mat-icon>post_add</mat-icon>
+        </button>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </mat-list>
+    <!-----------Liste Conversations--------------------->
+    <mat-nav-list style="overflow: auto; width: 100%; height: 300px;">
+      <mat-list-item *ngFor="let conv of conversationsList[0]" >
+        <mat-divider></mat-divider>
+        <span matListAvatar >
+              <ngx-avatar
+                mat-card-avatar
+                name={{conv.author.nom}}
+                src= {{conv.author.image}}
+                value="28%"
+                size="50" [round]="true">
+              </ngx-avatar>
+            </span>
+        <i matLine [routerLink]= "['/getConversation', conv.conversationId, conv.author.nom]" >{{conv.author.prenom}}</i>
+        <h3 matLine>{{conv.author.nom}}</h3>
+        <button mat-icon-button *ngIf="isAdmin" >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-nav-list>
+  </div>
+</div>
+

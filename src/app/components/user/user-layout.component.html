@@ -1,0 +1,10 @@
+<div style="width:100%;" fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="30px">
+  <app-add-user *ngIf="isAddUser" ></app-add-user>
+
+  <app-details-user *ngIf="isDetailsUser && currentUser.role" [currentUser]= "currentUser"></app-details-user>
+
+  <app-edit-user *ngIf="isEditUser"></app-edit-user>
+
+  <app-mdp-oublie  *ngIf="isMdpOublie"></app-mdp-oublie>
+
+</div>

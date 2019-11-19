@@ -1,0 +1,80 @@
+<div style="margin-top: 30px;">
+  <mat-card >
+      <form [formGroup]="signupFormValid" style="width:100%;" fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px" fxFlexAlign="start center">
+          <div fxLayout="column" fxLayoutGap="5px">
+            <mat-radio-group formControlName="genre" fxLayoutGap="20px">
+              <mat-radio-button value="Monsieur">Monsieur</mat-radio-button>
+              <mat-radio-button value="Madame">Madame</mat-radio-button>
+            </mat-radio-group>
+            <mat-form-field>
+              <input formControlName="prenom" matInput placeholder="Prénom" required>
+              <mat-error>Veuillez saisir votre prénom</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input formControlName="nom" matInput placeholder="Nom" required>
+              <mat-error>Veuillez saisir votre Nom</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input formControlName="pseudo" matInput placeholder="pseudo" required >
+              <mat-error>Veuillez saisir votre pseudo</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input formControlName="email" matInput placeholder="email" required>
+              <mat-error *ngIf="signupFormValid.get('email').hasError('email') && !signupFormValid.get('email').hasError('required')">
+                Saisir une adress email valide
+              </mat-error>
+              <mat-error *ngIf="signupFormValid.get('email').hasError('required')">
+                Email est obligatoire
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+               <input formControlName="age" matInput placeholder="age">
+              <mat-error>Veuillez saisir votre age</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Role</mat-label>
+              <mat-select formControlName="role" [disabled]="!isAdmin" required>
+                <mat-option value= "Admin">Admin</mat-option>
+                <mat-option value= "User">User</mat-option>
+              </mat-select>
+              <mat-error *ngIf="signupFormValid.hasError('required')">Donner un role</mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayout="column" fxLayoutGap="5px">
+            <mat-form-field appearance="fill">
+              <mat-label>Ton adresse</mat-label>
+              <textarea formControlName="adresse" matInput placeholder="20 caractères Max"></textarea>
+              <mat-error>Veuillez saisir votre adresse</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill" required>
+              <mat-label>Quelques mots sur toi !</mat-label>
+              <textarea formControlName="presentation" matInput placeholder="20 caractères Max"></textarea>
+              <mat-error>Veuillez saisir votre présentation</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Tes préférences...</mat-label>
+              <textarea formControlName="preferences" matInput placeholder="20 caractères Max"></textarea>
+              <mat-error>Veuillez saisir votre preferences</mat-error>
+            </mat-form-field>
+            <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="50px" >
+              <mat-form-field >
+                <input formControlName="password" matInput placeholder="6 caractères Min." required>
+                <mat-error *ngIf="signupFormValid.get('password').hasError('minlength') && !signupFormValid.get('password').hasError('required')">
+                  6 caractères Min.</mat-error>
+                <mat-error *ngIf="signupFormValid.get('password').hasError('required')">
+                  Veuillez saisir votre password</mat-error>
+                <mat-label><mat-icon>fingerprint</mat-icon> <b> Password</b></mat-label>
+              </mat-form-field>
+              <mat-form-field >
+                <input formControlName="confirmerPassword" matInput placeholder="confirmer password" required>
+                <mat-error>Password non identique</mat-error>
+                <mat-label><mat-icon>fingerprint</mat-icon> <i>Confirm</i> <b>Password</b></mat-label>
+              </mat-form-field>
+            </div>
+            <button mat-raised-button type="submit" color="primary" (click)="onSumit()" [disabled]="signupFormValid.invalid">Envoyer Inscription</button>
+            <button mat-raised-button color="accent" (click)="onClear()" >Retour vers login</button>
+          </div>
+      </form>
+  </mat-card>
+</div>
+

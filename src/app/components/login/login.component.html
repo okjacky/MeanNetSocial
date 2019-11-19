@@ -1,0 +1,38 @@
+<div class="containerBody" style="width: 100%;" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="10px" >
+  <mat-card style="width: 400px;" >
+    <form [formGroup]="userService.loginForm" fxLayout="column" style="width: 100%;">
+      <mat-form-field >
+        <input matInput formControlName="email" placeholder="Ton Email" >
+        <mat-error *ngIf="userService.loginForm.get('email').hasError('email') && !userService.loginForm.get('email').hasError('required')">
+          Please enter a valid email address
+        </mat-error>
+        <mat-error *ngIf="userService.loginForm.get('email').hasError('required')">
+          Email est <strong>OBLIGATOIRE</strong>
+        </mat-error>
+      </mat-form-field >
+      <mat-form-field >
+        <input formControlName="password" matInput placeholder="6 caractères Min." [type]="hide ? 'password' : 'text'">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="userService.loginForm.get('password').hasError('minlength') && !userService.loginForm.get('password').hasError('required')">
+          6 caractères Min.</mat-error>
+        <mat-error *ngIf="userService.loginForm.get('password').hasError('required')">
+          Veuillez saisir votre password</mat-error>
+        <mat-label><mat-icon>fingerprint</mat-icon> <b> Password</b></mat-label>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="userService.loginForm.invalid">Connexion</button>
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <button mat-button routerLink="/mdpOublie" color="accent">mot de passe oublié
+          <mat-icon>pets</mat-icon>
+        </button>
+        <button mat-button routerLink="/addUser" color="primary" >Créer un Compte
+          <mat-icon >offline_bolt</mat-icon>
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>
+
+
+

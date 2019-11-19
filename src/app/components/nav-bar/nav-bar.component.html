@@ -1,0 +1,38 @@
+<mat-toolbar color="primary" >
+  <mat-toolbar-row class="mat-elevation-z4">
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon class="between-icon" aria-hidden="false" aria-label="Example delete icon">menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button routerLink="/login" mat-menu-item>
+        <mat-icon>https</mat-icon>
+        <span>Login</span>
+      </button>
+      <button routerLink="/profil" mat-menu-item>
+        <mat-icon>face</mat-icon>
+        <span>Votre Profil</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>edit</mat-icon>
+        <span>Posts</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>language</mat-icon>
+        <span>Réseau</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>mail_outline
+        </mat-icon>
+        <span>Messages</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>chat_bubble_o</mat-icon>
+        <span>Chat</span>
+      </button>
+    </mat-menu>
+    <span class="between-icon" routerLink="/">netSocial</span>
+    <span class="right-spacer"></span>
+    <button mat-raised-button (click)="logout()">Déconnexion<mat-icon class="between-icon" >favorite</mat-icon></button>
+
+  </mat-toolbar-row>
+</mat-toolbar>

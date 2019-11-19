@@ -1,0 +1,87 @@
+<div style="width: 100%;  border: 1px solid gray; padding: 15px;" fxLayout="column">
+  <div style="width: 100%;" fxLayoutAlign="space-between">
+    <form [formGroup]="userSearchForm" >
+      <mat-form-field appearance="fill">
+        <input matInput placeholder="Tapez un/plusieurs noms !" aria-label="State" [matAutocomplete]="auto" formControlName="textSearch" >
+        <button matSuffix mat-icon-button >
+          <mat-icon >search</mat-icon>
+        </button>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" >
+          <mat-option *ngFor="let ami of filteredUser$ | async" [value]="ami._id"   >
+            <div fxLayout="row" fxLayoutGap="3%" fxLayoutAlign="start center" >
+              <span>
+                <ngx-avatar
+                  mat-card-avatar
+                  name={{ami.nom}}
+                  src={{ami.image}}
+                  value="28%"
+                  size="35" [round]="false">
+                </ngx-avatar>
+              </span>
+              <span>{{ami.nom}} -- {{ami.prenom}}</span>
+            </div>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+    <h3>Nouvelle conversation</h3>
+  </div>
+  <div style="width: 100%;">
+    <mat-divider></mat-divider>
+    <form formGroup="userSearchForm">
+      <mat-form-field class="example-chip-list" style="width: 100%">
+        <mat-chip-list #chipList aria-label="Fruit selection">
+          <mat-chip
+            *ngFor="let ami of listTo"
+            [selectable]="selectable"
+            [removable]="removable"
+            (removed)="remove(ami)">
+            {{ami}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input
+            formControlName="participant"
+
+            placeholder="Liste des participants..."
+            #nameInput
+            [matChipInputAddOnBlur]="addOnBlur"
+            [matAutocomplete]="auto"
+            [matChipInputFor]="chipList">
+          <mat-icon matSuffix>group</mat-icon>
+        </mat-chip-list>
+      </mat-form-field>
+    </form>
+  </div>
+  <div  fxLayout="column" fxLayoutGap="3%" style="overflow: auto; height: 200px;">
+    <mat-nav-list>
+      <mat-list-item *ngFor="let ami of userFromSearch" >
+
+      </mat-list-item>
+    </mat-nav-list>
+  </div>
+  <!-----------------------Textarea----------------------->
+  <div>
+    <mat-divider></mat-divider>
+    <form [formGroup]="userSearchForm" >
+      <mat-form-field style="width: 100%">
+        <textarea matInput placeholder="Rédiger un message ..."
+                  formControlName="content"
+                  cdkTextareaAutosize
+                  cdkAutosizeMaxRows="5"
+                  #autosize="cdkTextareaAutosize">
+        </textarea>
+        <button color="primary"
+                matSuffix mat-icon-button
+                [disabled]="userSearchForm.invalid"
+                (click)="envoyerMessage()">
+          <mat-icon>send</mat-icon>
+        </button>
+      </mat-form-field>
+    </form>
+  </div>
+  <div>
+
+  </div>
+
+
+</div>
