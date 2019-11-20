@@ -27,10 +27,8 @@ app.use(fileUpload({
 }));
 
 // Serve only the static files form the dist directory
-app.use(express.static(__dirname + '/dist/netSocial'));
-app.get('*', function(req,res) {
-  res.sendFile(path.join(__dirname + '/dist/netSocial/index.html'));
-});
+app.use(express.static(path.join(__dirname, '/dist/netSocial/')));
+
 
 // configuring across origin
 const corsOptions = {
@@ -65,6 +63,9 @@ io(server);
 app.use('/api/users', userController );
 app.use('/api/admin', adminController);
 app.use('/api/message', messageController);
+app.get('*', function(req,res) {
+  return res.sendFile(path.join(__dirname + '/dist/netSocial/index.html'));
+});
 // app.use('/api/chat', chatController);
 //app.use('/main', mainController);
 
