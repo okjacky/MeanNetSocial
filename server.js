@@ -27,10 +27,10 @@ app.use(fileUpload({
 }));
 
 // Serve only the static files form the dist directory
-app.use(express.static(__dirname + '/dist'));
-/**app.get('/*', function(req,res) {
-  res.sendFile(path.join(__dirname+'/dist/<name-of-app>/index.html'));
-});**/
+app.use(express.static(__dirname + '/dist/netSocial'));
+app.get('*', function(req,res) {
+  res.sendFile(path.join(__dirname + '/dist/netSocial/index.html'));
+});
 
 // configuring across origin
 const corsOptions = {
