@@ -12,8 +12,6 @@ import {first} from 'rxjs/operators';
 import {User} from '../models/user';
 
 
-const CHAT_PATH = environment.chatPath ;
-
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -25,6 +23,7 @@ export class ChatService {
 
   private socket: any;
   private chatUrl: string = environment.chatUrl;
+  private chatPath: string = environment.chatPath ;
 
   constructor(public authentcationService: AuthenticationService,
               private userService: UserService,
@@ -32,7 +31,7 @@ export class ChatService {
 
   connect(username: any, callback: Function = () => {}): void {
     // initialize the connection
-    this.socket = io.connect('http://localhost:8181/mean-chat-app.io');
+    this.socket = io(this.chatUrl, {path: this.chatPath});
 
     this.socket.on('error', error => {
       console.log('====================================');

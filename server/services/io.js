@@ -15,13 +15,10 @@ const users = [];
 const connections = [];
 
 function initialize (server) {
-  const io = socketIo(server);
-  io.configure(function () {
-    io.set("transports", ["xhr-polling"]);
-    io.set("polling duration", 10);
-  });
+  const io = socketIo(server, {path: process.env.CHAT_PATH});
 
-  io.of('/mean-chat-app.io').on('connection', socket => {
+
+  io.on('connection', socket => {
     connections.push(socket);
     socket.join('chat-room');
 
