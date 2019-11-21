@@ -107,9 +107,9 @@ function initialize (server) {
       });
     });
     /*************************Messages Handler**************************/
-    socket.on('message', data => {
+    socket.on('message', (from,data) => {
 
-      console.log('user on message io', data);
+      console.log('user on message io', from, data);
       if (data.to === 'chat-room') {
         socket.broadcast.to('chat-room').emit('message', data.message);
       } else {
