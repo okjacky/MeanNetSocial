@@ -16,6 +16,12 @@ const connections = [];
 
 function initialize (server) {
   const io = socketIo(server);
+  io.origins((origin, callback) => {
+    if (origin !== 'http://localhost:8181') {
+      return callback('origin not allowed', false);
+    }
+    callback(null, true);
+  });
 
   io.of('/mean-chat-app.io').on('connection', socket => {
     connections.push(socket);
