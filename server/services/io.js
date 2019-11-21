@@ -15,7 +15,7 @@ const users = [];
 const connections = [];
 
 function initialize (server) {
-  const io = socketIo(server);
+  const io = socketIo(server, {path: '/mean-chat-app.io'});
 
 
   io.on('connection', socket => {
