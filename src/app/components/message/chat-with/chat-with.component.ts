@@ -104,9 +104,17 @@ export class ChatWithComponent implements OnInit, OnDestroy {
       .pipe(first()).subscribe(
         (messagesListInit) => {
           console.log('onMessageListe$', messagesListInit);
-          messagesListInit.forEach((m) => {
-            this.messagesList.push(m);
-          });
+          if (messagesListInit) {
+            messagesListInit.forEach((m) => {
+              this.messagesList.push(m);
+              this.noMsg = false;
+              this.scrollToBottom();
+
+            });
+          } else {
+            this.noMsg = true;
+            this.messagesList = [];
+          }
         }
       ));
     this.chatService.getMessage(this.conversationId);
@@ -125,6 +133,6 @@ export class ChatWithComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       element.scrollTop = element.scrollHeight;
     }, 100);
-    }
+  }
 
 }

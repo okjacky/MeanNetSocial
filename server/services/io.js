@@ -109,7 +109,7 @@ function initialize (server) {
     /*************************Messages Handler**************************/
     socket.on('message', (from,data) => {
 
-      console.log('user on message io', from, data);
+      console.log('user on message io', data);
       if (data.to === 'chat-room') {
         socket.broadcast.to('chat-room').emit('message', data.message);
       } else {
@@ -120,10 +120,10 @@ function initialize (server) {
             for (let instance of instances) {
 
               console.log('instance io', instance.id);
-              socket.to(instance.id).emit('message', data.message);
+              socket.broadcast.to(instance.id).emit('message', data.message);
             }
             let myOtherInstances = searchConnections(socket.nom);
-            if (myOtherInstances.length > 1) {
+            if (myOtherInstances.length > 0) {
               console.log('myOtherInstances io', myOtherInstances);
               for (let conn of myOtherInstances) {
                 // exclude me
