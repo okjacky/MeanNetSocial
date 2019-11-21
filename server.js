@@ -32,7 +32,8 @@ app.use(express.static(path.join(__dirname, '/dist/netSocial/')));
 
 // configuring across origin
 const corsOptions = {
-  origin: 'https://meannetsocial.herokuapp.com',
+  origin: '*',
+  credentials: true,
   optionsSuccessStatus: 200
 }
 app.use(cors(corsOptions));
