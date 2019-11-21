@@ -16,6 +16,10 @@ const connections = [];
 
 function initialize (server) {
   const io = socketIo(server);
+  io.configure(function () {
+    io.set("transports", ["xhr-polling"]);
+    io.set("polling duration", 10);
+  });
 
   io.of('/mean-chat-app.io').on('connection', socket => {
     connections.push(socket);
