@@ -123,6 +123,7 @@ export class ChatWithComponent implements OnInit, OnDestroy {
     this.replyMessageForm.get('author').setValue(this.currentUser$._id);
     this.replyMessageForm.get('conversationId').setValue(this.conversationId);
     if (this.replyMessageForm.valid) {
+      console.log('this.chatWith', this.chatWith);
       this.chatService.sendMessage(this.replyMessageForm.value, this.chatWith);
       this.replyMessageForm.reset();
     }

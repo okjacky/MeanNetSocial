@@ -1,11 +1,12 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-const BASE_URL = 'http://localhost:8181';
+const BASE_URL = 'https://meannetsocial.herokuapp.com/';
+const BASE_HEROKU = 'https://meannetsocial.herokuapp.com/';
 
 export const environment = {
   production: true,
-  chatUrl: BASE_URL,
+  chatUrl: BASE_HEROKU,
   backendUrl: `${BASE_URL}/api`,
   chatPath: `/mean-chat-app.io`,
 };

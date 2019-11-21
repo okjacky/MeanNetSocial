@@ -107,7 +107,7 @@ function initialize (server) {
       });
     });
     /*************************Messages Handler**************************/
-    socket.on('message', (from,data) => {
+    socket.on('message', (data) => {
 
       console.log('user on message io', data);
       if (data.to === 'chat-room') {
@@ -118,13 +118,10 @@ function initialize (server) {
           let instances = searchConnections(data.to);
           if (instances.length > 0) {
             for (let instance of instances) {
-
-              console.log('instance io', instance.id);
               socket.broadcast.to(instance.id).emit('message', data.message);
             }
             let myOtherInstances = searchConnections(socket.nom);
             if (myOtherInstances.length > 0) {
-              console.log('myOtherInstances io', myOtherInstances);
               for (let conn of myOtherInstances) {
                 // exclude me
                 if (conn != socket) {

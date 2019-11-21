@@ -41,6 +41,7 @@ export class MessageLayoutComponent implements OnInit, OnDestroy {
   receiveMessageObs: any;
   receiveActiveObs: any;
   noMsg: boolean;
+  noUserOnline: Boolean;
   conversationId: string;
   notify: boolean;
   notification: any = { timeout: null };
@@ -137,9 +138,20 @@ export class MessageLayoutComponent implements OnInit, OnDestroy {
       .receiveActiveList()
       .pipe(first()).subscribe((activesUsers) => {
         if (activesUsers) {
-          this.userOnline = activesUsers;
-          console.log('userOnline', this.userOnline);
+          for (let i = 0; i < activesUsers; i++) {
+            if (activesUsers[i].nom === this.currentUser.nom) {
+              activesUsers.splice(i, 1);
+              this.userOnline = activesUsers;
+              console.log('userOnline', this.userOnline);
+              if (activesUsers.length === 0) {
+                this.noUserOnline = true;
+              } else {
+                this.noUserOnline = false;
+              }
+            }
+          }
         } else {
+          this.noUserOnline = true;
           this.dialog.open(DialogMdpOublieComponent, {
             height: '300px',
             width: '400px',
