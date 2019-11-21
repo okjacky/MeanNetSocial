@@ -15,7 +15,7 @@ const users = [];
 const connections = [];
 
 function initialize (server) {
-  const io = socketIo(server, {path: process.env.CHAT_PATH});
+  const io = socketIo(server);
 
 
   io.on('connection', socket => {

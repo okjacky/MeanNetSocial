@@ -37,6 +37,7 @@ const corsOptions = {
   origin: function(origin, callback){
     return callback(null, true);
   },
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 200
 }

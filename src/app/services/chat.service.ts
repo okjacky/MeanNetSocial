@@ -31,7 +31,7 @@ export class ChatService {
 
   connect(username: any, callback: Function = () => {}): void {
     // initialize the connection
-    this.socket = io(this.chatUrl, {path: this.chatPath});
+    this.socket = io();
 
     this.socket.on('error', error => {
       console.log('====================================');
