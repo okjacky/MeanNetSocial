@@ -1,10 +1,10 @@
 'use strict';
 
 const express = require('express');
-const http = require('http');
-const io = require('./server/services/io');
 const path = require('path');
 const app = express();
+const server = require('http').Server(app);
+const io = require('./server/services/io');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const session = require('express-session');
@@ -57,7 +57,7 @@ app.use(function (req, res, next) {
 
 // init server http et io
 // const server = http.createServer(app);
-io(app);
+io(server);
 
 // API routes
 app.use('/api/users', userController );
@@ -73,7 +73,7 @@ app.get('*', function(req,res) {
 //app.use(errorHandler);
 
 const port = process.env.PORT || 8181;
-app.listen(port, () => {
+server.listen(port, () => {
   console.log('Connected on ', port)
 });
 

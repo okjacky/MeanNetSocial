@@ -32,7 +32,7 @@ export class ChatService {
 
   connect(username: any, callback: Function = () => {}): void {
     // initialize the connection
-    this.socket = io(this.chatUrl, {path: CHAT_PATH});
+    this.socket = io.connect('http://localhost:8181/mean-chat-app.io');
 
     this.socket.on('error', error => {
       console.log('====================================');
