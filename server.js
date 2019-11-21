@@ -34,13 +34,7 @@ app.use(express.static(path.join(__dirname, '/dist/netSocial/')));
 
 const whitelist = ['https://meannetsocial.herokuapp.com', 'http://localhost:8181']
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  },
+  origin: "*",
   credentials: true,
   optionsSuccessStatus: 200
 }
