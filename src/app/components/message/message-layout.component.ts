@@ -99,9 +99,11 @@ export class MessageLayoutComponent implements OnInit, OnDestroy {
   connectToChat(): void {
     const connected = this.chatService.isConnected();
     if (connected === true) {
+      console.log('chat connected');
       this.getUserList();
       this.getConversationList();
     } else {
+      console.log('chat not connected');
       this.chatService.connect(
         this.currentUser.nom,
         () => {
@@ -137,7 +139,8 @@ export class MessageLayoutComponent implements OnInit, OnDestroy {
     this.subscription.push(this.chatService
       .receiveActiveList()
       .pipe(first()).subscribe((activesUsers) => {
-        if (activesUsers) {
+        console.log('activesUsers', activesUsers);
+        /**if (activesUsers) {
           for (let i = 0; i < activesUsers; i++) {
             if (activesUsers[i].nom === this.currentUser.nom) {
               activesUsers.splice(i, 1);
@@ -160,7 +163,7 @@ export class MessageLayoutComponent implements OnInit, OnDestroy {
               msg: 'Pas d\'utilisateur connecté ...'
             }
           });
-        }
+        }**/
     }));
     this.chatService.getActiveList();
   }
