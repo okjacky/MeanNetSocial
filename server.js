@@ -56,8 +56,8 @@ app.use(function (req, res, next) {
 });
 
 // init server http et io
-const server = http.createServer(app);
-io(server);
+// const server = http.createServer(app);
+io(app);
 
 // API routes
 app.use('/api/users', userController );
@@ -73,7 +73,7 @@ app.get('*', function(req,res) {
 //app.use(errorHandler);
 
 const port = process.env.PORT || 8181;
-server.listen(port, () => {
+app.listen(port, () => {
   console.log('Connected on ', port)
 });
 
