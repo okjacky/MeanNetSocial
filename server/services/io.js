@@ -110,15 +110,15 @@ function initialize (server) {
     /*************************Messages Handler**************************/
     socket.on('message', (data) => {
       console.log('user on message io', data);
-      if (data.to) {
+      /**if (data.to) {
         console.log('data.to]');
         let user = searchUser(data.to);
         if (io.sockets.connected[user.id]) {
           console.log('connected[user.id]');
           io.sockets.connected[user.id].emit('message', data.message);
         }
-      }
-      /**if (data.to === 'chat-room') {
+      }**/
+      if (data.to === 'chat-room') {
         socket.broadcast.to('chat-room').emit('message', data.message);
       } else {
         let user = searchUser(data.to);
@@ -127,7 +127,8 @@ function initialize (server) {
           if (instances.length > 0) {
             for (let instance of instances) {
               console.log('instance', instance.id);
-              io.to(instance.id).emit('message', data.message);
+              io.sockets.connected[instance.id].emit('message', data.message);
+              //io.to(instance.id).emit('message', data.message);
             }
             let myOtherInstances = searchConnections(socket.nom);
             if (myOtherInstances.length > 0) {
@@ -135,13 +136,14 @@ function initialize (server) {
                 console.log('conn', conn.id);
                 // exclude me
                 if (conn !== socket) {
-                  io.to(conn.id).emit('message', data.message);
+                  io.sockets.connected[conn.id].emit('message', data.message);
+                  //io.to(conn.id).emit('message', data.message);
                 }
               }
             }
           }
         }
-      }**/
+      }
       console.log(
         '[%s].to(%s)<< %s',
         data.message.author,
