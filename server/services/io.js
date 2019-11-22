@@ -17,7 +17,6 @@ const connections = [];
 function initialize (server) {
   const io = socketIo(server, {path: '/mean-chat-app.io'});
 
-
   io.on('connection', socket => {
     connections.push(socket);
     socket.join('chat-room');
@@ -27,6 +26,8 @@ function initialize (server) {
     });
 
     socket.on('username', data => {
+
+      console.log('username', data);
       if (data.nom) {
         socket.nom = data.nom;
         let user = { nom: socket.nom, id: socket.id , image: data.image, userId: data.userId};
@@ -108,7 +109,6 @@ function initialize (server) {
     });
     /*************************Messages Handler**************************/
     socket.on('message', (data) => {
-
       console.log('user on message io', data);
       if (data.to === 'chat-room') {
         socket.broadcast.to('chat-room').emit('message', data.message);
@@ -118,14 +118,16 @@ function initialize (server) {
           let instances = searchConnections(data.to);
           if (instances.length > 0) {
             for (let instance of instances) {
-              socket.broadcast.to(instance.id).emit('message', data.message);
+              console.log('instance', instance.id);
+              io.to(instance.id).emit('message', data.message);
             }
             let myOtherInstances = searchConnections(socket.nom);
             if (myOtherInstances.length > 0) {
               for (let conn of myOtherInstances) {
+                console.log('conn', conn.id);
                 // exclude me
-                if (conn != socket) {
-                  socket.broadcast.to(conn.id).emit('message', data.message);
+                if (conn !== socket) {
+                  io.to(conn.id).emit('message', data.message);
                 }
               }
             }

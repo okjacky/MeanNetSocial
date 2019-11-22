@@ -142,7 +142,8 @@ export class MessageLayoutComponent implements OnInit, OnDestroy {
         console.log('activesUsers', activesUsers);
         if (activesUsers) {
           console.log('activesUsers', activesUsers);
-          for (let i = 0; i < activesUsers.length; i++) {
+          this.userOnline = activesUsers;
+          /**for (let i = 0; i < activesUsers.length; i++) {
             if (activesUsers[i].nom === this.currentUser.nom) {
               activesUsers.splice(i, 1);
               this.userOnline = activesUsers;
@@ -153,7 +154,7 @@ export class MessageLayoutComponent implements OnInit, OnDestroy {
                 this.noUserOnline = false;
               }
             }
-          }
+          }**/
         } else {
           this.noUserOnline = true;
           this.dialog.open(DialogMdpOublieComponent, {
