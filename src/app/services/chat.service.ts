@@ -31,7 +31,7 @@ export class ChatService {
 
   connect(username: any, callback: Function = () => {}): void {
     // initialize the connection
-    this.socket = io({path: '/mean-chat-app.io'});
+    this.socket = io('https://meannetsocial.herokuapp.com/', {path: '/mean-chat-app.io'});
 
     this.socket.on('error', error => {
       console.log('====================================');
