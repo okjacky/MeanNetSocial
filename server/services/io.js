@@ -110,7 +110,15 @@ function initialize (server) {
     /*************************Messages Handler**************************/
     socket.on('message', (data) => {
       console.log('user on message io', data);
-      if (data.to === 'chat-room') {
+      if (data.to) {
+        console.log('data.to]');
+        let user = searchUser(data.to);
+        if (io.sockets.connected[user.id]) {
+          console.log('connected[user.id]');
+          io.sockets.connected[user.id].emit('message', data.message);
+        }
+      }
+      /**if (data.to === 'chat-room') {
         socket.broadcast.to('chat-room').emit('message', data.message);
       } else {
         let user = searchUser(data.to);
@@ -133,7 +141,7 @@ function initialize (server) {
             }
           }
         }
-      }
+      }**/
       console.log(
         '[%s].to(%s)<< %s',
         data.message.author,

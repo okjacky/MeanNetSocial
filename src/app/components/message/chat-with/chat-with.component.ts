@@ -74,14 +74,13 @@ export class ChatWithComponent implements OnInit, OnDestroy {
       .pipe(first())
       .subscribe(message => {
         console.log('msg receive:', message);
-
-        /**this.checkMine(message);
+        // this.checkMine(message);
         if (message.conversationId === this.conversationId) {
           this.noMsg = false;
           this.messagesList.push(message);
           this.scrollToBottom();
-          //this.msgSound();
-        } else if (message.mine != true) {
+          // this.msgSound();
+        } /**else if (message.mine != true) {
           if (this.notification.timeout) {
             clearTimeout(this.notification.timeout);
           }
