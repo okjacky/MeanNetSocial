@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import {environment} from '../../environments/environment';
-import {Http} from '@angular/http';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AuthenticationService} from './authentication.service';
 import {Observable} from 'rxjs';
 import {Message} from '../models/message';
 import {Conversation} from '../models/conversation';
 import {UserService} from './user.service';
-import {first} from 'rxjs/operators';
 import {User} from '../models/user';
 
 

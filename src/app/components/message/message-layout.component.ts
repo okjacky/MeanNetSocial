@@ -141,7 +141,7 @@ export class MessageLayoutComponent implements OnInit, OnDestroy {
       .pipe(first()).subscribe((activesUsers) => {
         console.log('activesUsers', activesUsers);
         if (activesUsers) {
-          console.log('activesUsers', activesUsers);
+          console.log('activesUsers1', activesUsers);
           this.userOnline = activesUsers;
           /**for (let i = 0; i < activesUsers.length; i++) {
             if (activesUsers[i].nom === this.currentUser.nom) {

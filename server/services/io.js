@@ -32,7 +32,7 @@ function initialize (server) {
         socket.nom = data.nom;
         let user = { nom: socket.nom, id: socket.id , image: data.image, userId: data.userId};
         let existing = searchUser(data.nom);
-        if (existing == false) {
+        if (existing === false) {
           users.push(user);
         }
 
@@ -43,7 +43,7 @@ function initialize (server) {
     });
 
     socket.on('getactive', () => {
-      socket.emit('active', users);
+      io.emit('active', users);
     });
     /********************Conversation Handler*********************/
     socket.on('getConversationList', (userId) => {
@@ -127,8 +127,8 @@ function initialize (server) {
           if (instances.length > 0) {
             for (let instance of instances) {
               console.log('instance', instance.id);
-              io.sockets.connected[instance.id].emit('message', data.message);
-              //io.to(instance.id).emit('message', data.message);
+              // io.sockets.connected[instance.id].emit('message', data.message);
+              socket.emit('message', data.message);
             }
             let myOtherInstances = searchConnections(socket.nom);
             if (myOtherInstances.length > 0) {
@@ -136,8 +136,8 @@ function initialize (server) {
                 console.log('conn', conn.id);
                 // exclude me
                 if (conn !== socket) {
-                  io.sockets.connected[conn.id].emit('message', data.message);
-                  //io.to(conn.id).emit('message', data.message);
+                  // io.sockets.connected[conn.id].emit('message', data.message);
+                  socket.emit('message', data.message);
                 }
               }
             }
@@ -173,7 +173,7 @@ function initialize (server) {
 
     socket.on('disconnect', () => {
       let instances = searchConnections(socket.nom);
-      if (instances.length == 1) {
+      if (instances.length === 1) {
         let user = searchUser(socket.nom);
         if (user != false) {
           users.splice(users.indexOf(user), 1);
