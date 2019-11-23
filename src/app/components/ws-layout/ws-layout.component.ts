@@ -31,6 +31,7 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
   receiveMessageObs: any;
   receiveActiveObs: any;
   noMsg: boolean;
+  noUserOnline: Boolean;
   conversationId: string;
   notify: boolean;
   notification: any = { timeout: null };
@@ -119,21 +120,17 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
       .pipe(first()).subscribe((activesUsers) => {
         console.log('activesUsers', activesUsers);
         if (activesUsers) {
-          console.log('activesUsers1', activesUsers);
-          this.userOnline = activesUsers;
-
-          /**for (let i = 0; i < activesUsers.length; i++) {
+          for (let i = 0; i < activesUsers.length; i++) {
             if (activesUsers[i].nom === this.currentUser.nom) {
               activesUsers.splice(i, 1);
               this.userOnline = activesUsers;
-              console.log('userOnline', this.userOnline);
               if (activesUsers.length === 0) {
                 this.noUserOnline = true;
               } else {
                 this.noUserOnline = false;
               }
             }
-          }**/
+          }
         } else {
           this.onNewConv('chat-room');
           this.dialog.open(DialogMdpOublieComponent, {
