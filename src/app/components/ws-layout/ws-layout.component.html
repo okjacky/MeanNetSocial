@@ -4,7 +4,7 @@
 <div  style="width:100%;" fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="30px">
   <div class="containerBody" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" >
     <div fxLayout="column" fxFlex="35%" fxLayoutGap="2%">
-      <app-ws-online [current$]="chatWith" [usersOnline$]="userOnline" ></app-ws-online>
+      <app-ws-online [current$]="chatWith" [usersOnline$]="userOnline" (newConv)="onNewConv($event)" ></app-ws-online>
     </div>
     <div style="width: 100%; border: 1px solid gray; padding: 15px;" fxLayout="column" fxFlex="60%" fxLayoutGap="2%">
       <div style="height: 30px;" fxLayoutAlign="center center">
