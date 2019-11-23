@@ -8,8 +8,9 @@ import {AuthenticationService} from '../../services';
 import {Subscription} from 'rxjs';
 import {first} from 'rxjs/operators';
 import {DialogMdpOublieComponent} from '../user/mdp-oublie/mdp-oublie.component';
-import {MatDialog} from '@angular/material';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {Role} from '../../models';
+import {SnackBarAddUserComponent} from '../user/add-user/add-user.component';
 
 @Component({
   selector: 'app-ws-layout',
@@ -39,6 +40,7 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
               public route: ActivatedRoute,
               public fb: FormBuilder,
               public el: ElementRef,
+              private _snackBar: MatSnackBar,
               private chatService: ChatService,
               private authenticationService: AuthenticationService,
               private dialog: MatDialog,
@@ -96,11 +98,15 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
           this.scrollToBottom();
           // this.msgSound();
         } else if (message.mine !== true) {
-          if (this.notification.timeout) {
+          this._snackBar.openFromComponent(SnackBarAddUserComponent, {
+            duration: 8000,
+            data: {msg: message.author + 'vous envoie un chat: ' + '"' + message.body + '"'}
+          });
+          /**if (this.notification.timeout) {
             clearTimeout(this.notification.timeout);
           }
           this.notification = {
-            from: message.from,
+            from: message.author,
             inChatRoom: message.inChatRoom,
             text: message.text,
             timeout: setTimeout(() => {
@@ -108,7 +114,7 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
             }, 4000),
           };
           this.notify = true;
-          // this.notifSound();
+          // this.notifSound();**/
         }
       }));
 

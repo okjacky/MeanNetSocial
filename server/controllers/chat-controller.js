@@ -105,7 +105,7 @@ async function getConversationByName(req, res, next) {
               response.conversation = conversation2;
               response.messages = messages;
               console.log('getConversationByName', response);
-              return res.status(200).json(response);
+              res.status(200).json(response);
             });
           /**Message.getMessagesByConv(conversation2._id, (err, messages) => {
             if (err) {
@@ -136,7 +136,7 @@ async function getConversationByName(req, res, next) {
           response.conversation = conversation1;
           response.messages = messages;
           console.log('getConversationByName conv 1', response);
-          return res.status(200).json(response);
+          res.status(200).json(response);
         });
       /**Message.getMessagesByConv(conversation1._id, (err, messages) => {
         if (err) {
