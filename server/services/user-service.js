@@ -14,6 +14,7 @@ module.exports = {
   signup,
   getAll,
   getById,
+  getByName,
   getEmail,
   update,
   updateAvatar,
@@ -115,6 +116,10 @@ async function confirmationToken(token) {
 
 async function getById(id) {
   return await User.findById(id).select('-password');
+}
+
+async function getByName(name) {
+  return await User.findOne({nom: name}).select('-password');
 }
 
 async function update(id, userParam) {

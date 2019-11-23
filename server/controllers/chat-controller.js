@@ -8,6 +8,7 @@ const Message = db.Message,
   Conversation = db.Conversation,
   Members = db.User;
 const chatService = require('../services/chat-service');
+const userService = require('../services/user-service');
 require('dotenv').config();
 
 
@@ -69,26 +70,24 @@ async function getConversationByName(req, res, next) {
             if (err || user1 == null) {
               return errorHandler(err);
             }
-            Members.find({nom: participant2}, function (err, user2) {
-              if (err || user2 == null) {
-                return errorHandler(err);
-              }
-
-              let participants = [user1._id, user2._id];
-              let conversation = new Conversation({
-                participants: participants,
-                name: "" + user1.nom + "-" + user2.nom
-              });
-              conversation.save(function (err, newConversation) {
-                let response = {success: true};
-                if (err) {
-                  return errorHandler(err);
-                }
-                response.msg = "Conversation retrieved successfuly";
-                response.conversation = newConversation;
-                res.status(200).json(response);
-              });
-            });
+            userService.getByName(participant2)
+              .then((user2)=> {
+                let participants = [user1._id, user2._id];
+                let conversation = new Conversation({
+                  participants: participants,
+                  name: "" + user1.nom + "-" + user2.nom
+                });
+                conversation.save(function (err, newConversation) {
+                  let response = {success: true};
+                  if (err) {
+                    return errorHandler(err);
+                  }
+                  response.msg = "Conversation retrieved successfuly";
+                  response.conversation = newConversation;
+                  res.status(200).json(response);
+                });
+              })
+              .catch(err => next(err));
           });
         } else {
           Message.find({ conversationId: conversation2._id })
