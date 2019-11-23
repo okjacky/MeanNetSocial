@@ -47,7 +47,6 @@ async function getChatRoom(req, res, next) {
           }
           response.conversation = conversation;
           response.messages = messages;
-          console.log('getChatRoom$', response);
           res.status(200).json(response);
 
         });
@@ -70,10 +69,11 @@ async function getConversationByName(req, res, next) {
             if (err || user1 == null) {
               return errorHandler(err);
             }
-            Members.findOne({nom: participant2}, function (err, user2) {
+            Members.find({nom: participant2}, function (err, user2) {
               if (err || user2 == null) {
                 return errorHandler(err);
               }
+
               let participants = [user1._id, user2._id];
               let conversation = new Conversation({
                 participants: participants,

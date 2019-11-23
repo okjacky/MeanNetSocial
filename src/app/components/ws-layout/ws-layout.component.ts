@@ -119,7 +119,8 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
       .receiveActiveList()
       .pipe(first()).subscribe((activesUsers) => {
         console.log('activesUsers', activesUsers);
-        if (activesUsers) {
+        this.userOnline = activesUsers;
+        /**if (activesUsers) {
           for (let i = 0; i < activesUsers.length; i++) {
             if (activesUsers[i].nom === this.currentUser.nom) {
               activesUsers.splice(i, 1);
@@ -141,7 +142,7 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
               msg: 'Pas d\'utilisateur connecté ...'
             }
           });
-        }
+        }**/
       }));
     this.chatService.getActiveList();
   }
@@ -150,7 +151,7 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
       .pipe(first()).subscribe((data) => {
         if (data.success === true) {
           console.log('getMessage ', data);
-          this.conversationId = data.conversation._id || data.conversation._doc._id;
+          this.conversationId = data.conversation._id;
           const messages = data.messages || null;
           if (messages && messages.length > 0) {
             for (const message of messages) {
@@ -169,8 +170,9 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
       }));
   }
   onNewConv (username: string ) {
+    console.log('onNewConv', username);
     if (this.chatWith !== username) {
-      this.router.navigate(['/chat', username]);
+      this.router.navigate(['/wsChat', username]);
       this.getMessages(username);
     } else {
       this.getMessages(username);
@@ -183,7 +185,6 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
     this.replyMessageForm.get('image').setValue(this.currentUser.image);
     this.replyMessageForm.get('conversationId').setValue(this.conversationId);
     if (this.replyMessageForm.valid) {
-      console.log('this.chatWith', this.chatWith);
       this.chatService.sendMessage(this.replyMessageForm.value, this.chatWith);
       this.replyMessageForm.reset();
     }

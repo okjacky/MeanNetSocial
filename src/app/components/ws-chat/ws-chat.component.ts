@@ -19,7 +19,6 @@ export class WsChatComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('onit msg', this.message);
     setTimeout(() => {this.updateFromNow(); this.fadeTime = true; }, 2000);
     setInterval(() => {this.updateFromNow(); }, 60000);
     if (this.message.author.nom) {
