@@ -18,7 +18,6 @@ router.delete('/conversation/delete/:conversationId', _deleteConversation);
 
 module.exports = router;
 
-
 async function getAllConversations(req, res, next) {
   const userId = req.params.id
   await Conversation.find({$or:[
@@ -71,6 +70,7 @@ async function getOneConversation(req, res, next) {
   const conversationId = req.params.conversationId
   await Message.find({ conversationId: conversationId })
     .sort('createdAt')
+    .limit(1)
     .populate({
       path: 'author',
       select: 'prenom nom image'
@@ -97,8 +97,7 @@ function sendReply(req, res, next) {
 
 async function newConversation(req, res, next) {
   const composedMessage = req.body;
-
-  console.log('mc composedMessage', composedMessage);
+  console.log('newConversation', composedMessage);
   if(!composedMessage) {
     return;
   }
@@ -112,7 +111,7 @@ async function newConversation(req, res, next) {
     const message = new Message({
       conversationId: newConversation._id,
       body: composedMessage.content,
-      author: composedMessage.author
+      author: composedMessage.userId
     });
 
     message.save(function(err, newMessage) {

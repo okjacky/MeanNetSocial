@@ -9,9 +9,6 @@ const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 module.exports = {
-  getAllConversations,
-  getOneConversation,
-  newConversation,
   sendReply,
   delete: _deleteConversation
 };

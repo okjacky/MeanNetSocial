@@ -57,6 +57,16 @@ export class ChatService {
     this.socket.disconnect();
   }
 
+  getOneConversationByName(name1: string, name2: string ): Observable<any> {
+    let url = '/api/chat/';
+    if (name2 !== 'chat-room') {
+      const route = `/${name1}/${name2}`;
+      url += route;
+    }
+    return this.http.get<any>(url);
+
+  }
+
   receiveConversationList() {
     const observable = new Observable(observer => {
       this.socket.on('onConversationList', (data: Message[]) => {

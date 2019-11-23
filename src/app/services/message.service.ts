@@ -32,7 +32,6 @@ export class MessageService {
   }
 
   getOneConversation(conversationId: string, ): Observable<Conversation> {
-    console.log('ms tS', conversationId);
     return this.http.get<Conversation>(`/api/message/conversation/${conversationId}`);
   }
 

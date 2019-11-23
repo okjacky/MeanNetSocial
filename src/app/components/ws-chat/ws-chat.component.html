@@ -1,3 +1,26 @@
-<p>
-  ws-chat works!
-</p>
+<div style="width: 100%; " fxLayout="column" fxLayoutGap="3%" >
+
+  <!---------------------display Msg--------------------->
+  <div  fxLayout="column" fxLayoutGap="3%" style="padding: 15px;">
+    <div fxLayout="row" fxLayoutGap="3%" fxLayoutAlign="start start">
+      <span>
+        <ngx-avatar
+          mat-card-avatar
+          name={{messageAuthor}}
+          src={{message.author.image}}
+          value="28%"
+          size="50" [round]="true">
+        </ngx-avatar>
+      </span>
+      <div fxLayout="column">
+        <i>{{messageAuthor}} <small> • {{time}}</small></i>
+        <p>
+          {{message.body}}
+        </p>
+        <mat-divider></mat-divider>
+      </div>
+
+    </div>
+  </div>
+
+</div>

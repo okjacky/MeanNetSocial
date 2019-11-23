@@ -1,14 +1,12 @@
 import {Component, ElementRef, Input, OnInit} from '@angular/core';
-import {Conversation} from '../../../models/conversation';
 import {Message} from '../../../models/message';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {first} from 'rxjs/operators';
 import {MessageService} from '../../../services/message.service';
 import {User} from '../../../models/user';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {DialogMdpOublieComponent} from '../../user/mdp-oublie/mdp-oublie.component';
 import {MatDialog} from '@angular/material';
-import {Observable} from 'rxjs';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-get-conversation',
@@ -21,6 +19,7 @@ export class GetConversationComponent implements OnInit {
   conversationId: string;
   sender: string;
   messagesList: Message[] = [];
+  time: string;
 
   @Input() currentUser$: User;
 
@@ -69,4 +68,7 @@ export class GetConversationComponent implements OnInit {
       element.scrollTop = element.scrollHeight;
     }, 100);
   }
+  /**updateFromNow(): void {
+    this.time = moment(this.message.created).fromNow();
+  }**/
 }

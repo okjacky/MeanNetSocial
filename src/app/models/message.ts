@@ -3,4 +3,5 @@ export class Message {
   conversationId: string;
   body: string;
   author: {_id: string, prenom: string, nom: string, image: string, id: string };
+  createAt: Date;
 }

@@ -43,7 +43,7 @@ const routes: Routes = [
     data: { roles: [Role.User, Role.Admin] }},
   { path: 'wsChat', canActivate: [AuthGuard], children: [
       { path: ':chatWith', component: WsLayoutComponent },
-      { path: '**', redirectTo: '/wsChat/chatRoom', pathMatch: 'full' }
+      { path: '**', redirectTo: '/wsChat/chat-room', pathMatch: 'full' }
     ] },
   {
     path: 'admin',

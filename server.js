@@ -18,6 +18,7 @@ require('dotenv').config();
 const userController = require('./server/controllers/user-controller');
 const adminController = require('./server/controllers/admin-controller');
 const messageController = require('./server/controllers/message-controller');
+const chatController = require('./server/controllers/chat-controller');
 // const chatController = require('./server/controllers/chat-controller');
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -69,6 +70,7 @@ io(server);
 app.use('/api/users', userController );
 app.use('/api/admin', adminController);
 app.use('/api/message', messageController);
+app.use('/api/chat', chatController);
 app.get('*', function(req,res) {
   return res.sendFile(path.join(__dirname + '/dist/netSocial/index.html'));
 });

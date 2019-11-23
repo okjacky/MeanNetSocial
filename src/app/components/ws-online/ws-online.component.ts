@@ -12,10 +12,10 @@ export class WsOnlineComponent implements OnInit {
   @Input() current$: string;
   @Output() newConv: EventEmitter<string> = new EventEmitter<string>();
 
+
   constructor() { }
 
-  ngOnInit() { console.log('userOnline', this.usersOnline$);
-  }
+  ngOnInit() {}
 
   onUserClick(username: string): boolean {
     this.newConv.emit(username);

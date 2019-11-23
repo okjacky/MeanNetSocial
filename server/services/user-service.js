@@ -117,7 +117,6 @@ async function getById(id) {
   return await User.findById(id).select('-password');
 }
 
-
 async function update(id, userParam) {
   const user = await User.findById(id).select('-password');
 

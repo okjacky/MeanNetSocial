@@ -36,7 +36,7 @@ function initialize (server) {
           users.push(user);
         }
 
-        io.emit('active', users);
+        socket.emit('active', users);
         console.log('[%s] connected', socket.nom);
         console.log('<users>:', users);
       }
@@ -110,16 +110,8 @@ function initialize (server) {
     /*************************Messages Handler**************************/
     socket.on('message', (data) => {
       console.log('user on message io', data);
-      /**if (data.to) {
-        console.log('data.to]');
-        let user = searchUser(data.to);
-        if (io.sockets.connected[user.id]) {
-          console.log('connected[user.id]');
-          io.sockets.connected[user.id].emit('message', data.message);
-        }
-      }**/
       if (data.to === 'chat-room') {
-        socket.broadcast.to('chat-room').emit('message', data.message);
+        io.to('chat-room').emit('message', data.message);
       } else {
         let user = searchUser(data.to);
         if (user != false) {
@@ -127,8 +119,9 @@ function initialize (server) {
           if (instances.length > 0) {
             for (let instance of instances) {
               console.log('instance', instance.id);
+              socket.broadcast.to(instance.id).emit('message', data.message);
               // io.sockets.connected[instance.id].emit('message', data.message);
-              socket.emit('message', data.message);
+              //socket.emit('message', data.message);
             }
             let myOtherInstances = searchConnections(socket.nom);
             if (myOtherInstances.length > 0) {
@@ -137,7 +130,7 @@ function initialize (server) {
                 // exclude me
                 if (conn !== socket) {
                   // io.sockets.connected[conn.id].emit('message', data.message);
-                  socket.emit('message', data.message);
+                  socket.broadcast.to(conn.id).emit('message', data.message);
                 }
               }
             }
@@ -150,10 +143,18 @@ function initialize (server) {
         data.to,
         data.message.content
       );
-      /**
-      // save the message to the database
-      let message = new Message(data.message);
-      Message.addMessage(message, (err, newMsg) => {}); **/
+
+      const reply = new Message({
+        conversationId: data.message.conversationId,
+        body: data.message.body,
+        author: data.message.authorId
+      });
+
+      reply.save(function(err, sentReply) {
+        if (err) {
+          return errorHandler(err);
+        }
+      });
     });
 
     socket.on('getMessage', (conversationId) => {
@@ -181,7 +182,7 @@ function initialize (server) {
       }
 
       io.emit('active', users);
-      console.log('[%s] disconnected', socket.username);
+      console.log('[%s] disconnected', socket.nom);
       console.log('<users>:', users);
 
       let connIndex = connections.indexOf(socket);

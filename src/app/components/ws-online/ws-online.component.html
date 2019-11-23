@@ -1,39 +1,32 @@
-<div style="width: 100%; border: 1px solid gray;">
-  <mat-list>
-    <mat-list-item>
-      <mat-icon matListIcon>chat_buble_online</mat-icon>
-      <h3 matLine>CHAT-ROOM</h3>
-      <i style="font-size: 12px">Nouvelle Conversation</i>
-      <button mat-icon-button routerLink="/newConversation"
-              MatTooltipModule="Nouvelle Conversation Group"
-              aria-label="Button that displays a tooltip when focused or hovered over">
+<div style="width: 100%; border: 1px solid gray;" fxLayout="column">
 
-        <mat-icon>post_add</mat-icon>
-      </button>
+  <!-----------Liste Conversations--------------------->
+  <div fxLayoutAlign="center" >
+    <h3>Chat !</h3>
+  </div>
+  <mat-divider></mat-divider>
+  <mat-nav-list style="overflow: auto; width: 100%; height: 300px;">
+    <mat-list-item (click)="onUserClick('chat-room')">
+      <h3 matLine>CHAT-ROOM</h3>
+      <mat-icon>chat</mat-icon>
       <mat-divider></mat-divider>
     </mat-list-item>
-  </mat-list>
-  <!-----------Liste Conversations--------------------->
-  <!--<div fxLayoutAlign="center" *ngIf="!conversationsList[0]">
-    <mat-spinner></mat-spinner>
-  </div>
-  <mat-nav-list style="overflow: auto; width: 100%; height: 300px;">
-    <mat-list-item *ngFor="let conv1 of usersOnline" (click)="onUserClick(user.nom)">
+    <mat-list-item *ngFor="let user of usersOnline$" (click)="onUserClick(user.nom)">
       <mat-divider></mat-divider>
       <span matListAvatar >
-              <ngx-avatar
-                mat-card-avatar
-                name={{conv1.body}}
-                src= ''
-                value="28%"
-                size="50" [round]="true">
-              </ngx-avatar>
-            </span>
-      <i matLine [routerLink]= "['/getConversation', conv1.conversationId, conv1.author.nom]" >{{conv1.body}}</i>
-      <h3 matLine>{{conv1.body}}</h3>
-      <button mat-icon-button (click)="deleteConversation(conv1.conversationId)">
-        <mat-icon>delete</mat-icon>
+        <ngx-avatar
+          mat-card-avatar
+          name={{user.nom}}
+          src= {{user.image}}
+          value="28%"
+          size="50" [round]="true">
+        </ngx-avatar>
+      </span>
+      <i matLine >{{user.nom }}</i>
+      <small matLine>click and get chat with me !</small>
+      <button mat-icon-button >
+        <mat-icon>chat</mat-icon>
       </button>
     </mat-list-item>
-  </mat-nav-list>-->
+  </mat-nav-list>
 </div>
