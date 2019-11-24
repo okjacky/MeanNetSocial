@@ -127,8 +127,7 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
       .receiveActiveList()
       .pipe(first()).subscribe((activesUsers) => {
         console.log('activesUsers', activesUsers);
-        this.userOnline = activesUsers;
-        /**if (activesUsers) {
+        if (activesUsers) {
           for (let i = 0; i < activesUsers.length; i++) {
             if (activesUsers[i].nom === this.currentUser.nom) {
               activesUsers.splice(i, 1);
@@ -150,7 +149,7 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
               msg: 'Pas d\'utilisateur connecté ...'
             }
           });
-        }**/
+        }
       }));
     this.chatService.getActiveList();
   }

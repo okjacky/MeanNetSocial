@@ -120,6 +120,7 @@ export class ChatService {
   receiveActiveList(): any {
     const observable: Observable<User[]> = new Observable(observer => {
       this.socket.on('active', data => {
+        console.log('receiveActiveList CS', data);
         observer.next(data);
       });
     });

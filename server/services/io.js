@@ -36,7 +36,7 @@ function initialize (server) {
           users.push(user);
         }
 
-        socket.emit('active', users);
+        io.emit('active', users);
         console.log('[%s] connected', socket.nom);
         console.log('<users>:', users);
       }
@@ -124,7 +124,7 @@ function initialize (server) {
               //socket.emit('message', data.message);
             }
             let myOtherInstances = searchConnections(socket.nom);
-            if (myOtherInstances.length > 1) {
+            if (myOtherInstances.length > 0) {
               for (let conn of myOtherInstances) {
                 console.log('conn', conn.id);
                 socket.broadcast.to(conn.id).emit('message', data.message);
