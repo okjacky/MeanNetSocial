@@ -15,7 +15,7 @@ export class WsOnlineComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {console.log('ws-online', this.usersOnline$); }
 
   onUserClick(username: string): boolean {
     this.newConv.emit(username);
