@@ -125,7 +125,7 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
   getUserList(): void {
     this.subscription.push(this.chatService
       .receiveActiveList()
-      .pipe(first()).subscribe((activesUsers) => {
+      .subscribe((activesUsers) => {
         console.log('activesUsers', activesUsers);
         if (activesUsers) {
           for (let i = 0; i < activesUsers.length; i++) {
@@ -155,7 +155,7 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
   }
   getMessages(name: string): void {
     this.subscription.push(this.chatService.getOneConversationByName(this.currentUser.nom, name)
-      .pipe(first()).subscribe((data) => {
+      .subscribe((data) => {
         if (data.success === true) {
           console.log('getMessage ', data);
           this.conversationId = data.conversation._id;

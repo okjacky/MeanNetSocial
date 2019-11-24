@@ -127,7 +127,7 @@ function initialize (server) {
             if (myOtherInstances.length > 0) {
               for (let conn of myOtherInstances) {
                 console.log('conn', conn.id);
-                socket.broadcast.to(conn.id).emit('message', data.message);
+                socket.to(conn.id).emit('message', data.message);
                 // exclude me
                 if (conn !== socket) {
                   // io.sockets.connected[conn.id].emit('message', data.message);
