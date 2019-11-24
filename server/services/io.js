@@ -126,8 +126,9 @@ function initialize (server) {
             let myOtherInstances = searchConnections(socket.nom);
             if (myOtherInstances.length > 0) {
               for (let conn of myOtherInstances) {
-                console.log('conn', conn.id);
-                socket.to(conn.id).emit('message', data.message);
+                console.log('conn', conn.id, myOtherInstances);
+                io.to(conn.id).emit('message', data.message);
+                io.sockets.connected[conn.id].emit('message', {1:'io.sockets.connected', msg: data.message});
                 // exclude me
                 if (conn !== socket) {
                   // io.sockets.connected[conn.id].emit('message', data.message);

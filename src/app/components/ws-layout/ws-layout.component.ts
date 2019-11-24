@@ -102,7 +102,7 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
         } else if (message.mine !== true) {
           this._snackBar.openFromComponent(SnackBarAddUserComponent, {
             duration: 8000,
-            data: {msg: message.author + 'vous envoie un chat: ' + '"' + message.body + '"'}
+            data: {msg: message.author + ' vous envoie un chat: ' + '"' + message.body + '"'}
           });
           /**if (this.notification.timeout) {
             clearTimeout(this.notification.timeout);
