@@ -130,7 +130,7 @@ function initialize (server) {
                 // exclude me
                 if (conn !== socket) {
                   // io.sockets.connected[conn.id].emit('message', data.message);
-                  socket.to(conn.id).emit('message', data.message);
+                  socket.broadcast.to(conn.id).emit('message', data.message);
                 }
               }
             }
@@ -208,7 +208,7 @@ const searchUser = username => {
 const searchConnections = username => {
   let found = [];
   for (let conn of connections) {
-    if (conn.nom == username) {
+    if (conn.nom === username) {
       found.push(conn);
     }
   }
