@@ -90,7 +90,9 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
   initReceivers(): void {
     this.getUserList();
     this.subscription.push(this.chatService.receiveMessage()
-      .pipe(first()).subscribe(message => {
+      .subscribe(message => {
+        console.log('receiveMessage', message);
+        console.log('message.conversationId', message.conversationId, this.conversationId);
         this.checkMine(message);
         if (message.conversationId === this.conversationId) {
           this.noMsg = false;

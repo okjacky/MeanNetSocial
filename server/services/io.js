@@ -124,13 +124,13 @@ function initialize (server) {
               //socket.emit('message', data.message);
             }
             let myOtherInstances = searchConnections(socket.nom);
-            if (myOtherInstances.length > 0) {
+            if (myOtherInstances.length > 1) {
               for (let conn of myOtherInstances) {
                 console.log('conn', conn.id);
                 // exclude me
                 if (conn !== socket) {
                   // io.sockets.connected[conn.id].emit('message', data.message);
-                  socket.broadcast.to(conn.id).emit('message', data.message);
+                  socket.to(conn.id).emit('message', data.message);
                 }
               }
             }
