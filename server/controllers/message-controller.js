@@ -20,14 +20,14 @@ module.exports = router;
 
 async function getAllConversations(req, res, next) {
   const userId = req.params.id
-  await Conversation.find({$or:[
-      { participants: userId },
-      {name: userId},
-    ]})
+  console.log('mc getAllConversations', userId);
+  await Conversation.find({ participants: userId })
     .select('_id')
     .exec(function(err, conversations) {
-      if (err) {
-        return errorHandler(err);
+      if (err || conversations === null) {
+        console.log('err conversations')
+        const reponse = {success: false, conversation: null};
+        res.status(200).json(reponse);
       }
       // Set up empty array to hold conversations + most recent message
       let fullConversations = [];
@@ -43,34 +43,24 @@ async function getAllConversations(req, res, next) {
             if (err) {
               return errorHandler(err);
             }
-            message.forEach((m) => fullConversations.push(m));
-
+            console.log('messgae getAllConversations**', message[0]);
+            fullConversations.push(message[0]);
             ;
+            console.log('fullConversations getAllConversations', fullConversations.length, conversations.length);
             if(fullConversations.length === conversations.length) {
-              const reponse = {
-                success: true,
-                conversations: fullConversations,
-              }
-              return res.status(200).json(reponse);
+              const reponse = {success: true, conversation: fullConversations};
+              res.status(200).json(reponse);
             }
           });
       });
     });
-
-  /**messageService.getAllConversations(req.params.id)
-    .then((allConversations) => {
-      console.log('mc: getall', allConversations);
-      res.status(200).json(allConversations)})
-    .catch((err) => {
-      console.log('getall mc',err);
-      res.status(500).json({ error: 'load all conversations failed!' })});**/
 }
 
 async function getOneConversation(req, res, next) {
   const conversationId = req.params.conversationId
+  console.log('mc getOneConversation', conversationId);
   await Message.find({ conversationId: conversationId })
     .sort('createdAt')
-    .limit(1)
     .populate({
       path: 'author',
       select: 'prenom nom image'
@@ -79,7 +69,8 @@ async function getOneConversation(req, res, next) {
       if (err) {
         return errorHandler(err);
       }
-      return res.status(200).json({ msg: messages });
+      console.log('mc messages getOneConversation', messages);
+      res.status(200).json({ msg: messages });
     });
 }
 
@@ -102,7 +93,7 @@ async function newConversation(req, res, next) {
     return;
   }
   const conversation = new Conversation({
-    participants: composedMessage.participants,
+    participants: composedMessage.participant,
   });
   await conversation.save(function(err, newConversation) {
     if (err) {

@@ -67,9 +67,7 @@ export class NewConversationComponent implements OnInit, OnDestroy {
     // console.log('filteredUser$', this.filteredUser$);
   }
 
-  ngOnInit() {
-    console.log('oninit', this.currentUser$);
-  }
+  ngOnInit() {this.listToId.push(this.currentUser$._id); }
 
   ngOnDestroy() {
     this.subscription.forEach(sub => sub.unsubscribe());
@@ -105,7 +103,7 @@ export class NewConversationComponent implements OnInit, OnDestroy {
   envoyerMessage () {
 
     this.userSearchForm.get('userId').setValue(this.currentUser$._id);
-    console.log(this.userSearchForm.value);
+    console.log('userSearchForm', this.userSearchForm.value);
     this.subscription.push(this.messageService.newConversation(this.userSearchForm.value)
       .pipe(first()).subscribe((success) => {
         this.router.navigate(['/getConversation', success.conversationId, this.currentUser$.nom]);

@@ -58,7 +58,7 @@
     </mat-nav-list>
   </div>
   <!-----------------------------a propos----------------------------->
-  <div *ngIf="userFromSearch.length == 0" fxLayout="column" fxLayoutGap="3%" fxFlex="70%">
+  <div *ngIf="userFromSearch.length === 0" fxLayout="column" fxLayoutGap="3%" fxFlex="70%">
     <div *ngIf="currentUser.request.length > 0">
       <mat-grid-list cols="3" rowHeight="130px" gutterSize="10px">
         <mat-grid-tile

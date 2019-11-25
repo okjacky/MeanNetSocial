@@ -185,23 +185,32 @@ async function connexionRequest(item) {
     console.log('us rcon');
     const currentUserId = item.acceptRequest.senderId;
     const receiverId = item.acceptRequest.receiverId;
-
-    const user = await User.findById(currentUserId, function (err, s) {
+    await User.findById(currentUserId, function (err, s) {
       if(err) {return errorHandler(err)};
+      for(let i = 0; i < s.request.length; i++) {
+        if(s.request[i].userId === receiverId) {
+          s.request[i].remove();
+        }
+      }
       s.followers.push({userId: receiverId});
       s.save((err, user) => {
         if(err) {return errorHandler(err)}
-
+        return user;
       });
     })
     await User.findById(receiverId, function (err, r) {
       if(err) {return errorHandler(err)};
+      for(let i = 0; i < r.sendRequest.length; i++) {
+        if(r.sendRequest[i].userId === currentUserId) {
+          r.sendRequest[i].remove()
+        }
+      }
       r.followers.push({userId: currentUserId});
-      r.save(err => {
+      r.save((err, user )=> {
         if(err) {return errorHandler(err)}
+        return user
       });
     })
-    return user;
   }
 
   if (item.deleteRequest) {
@@ -209,13 +218,14 @@ async function connexionRequest(item) {
     const currentUserId = item.deleteRequest.senderId;
     const receiverId = item.deleteRequest.receiverId;
 
-    const user$ = await User.findById(currentUserId, function (err, s) {
+    await User.findById(currentUserId, function (err, s) {
       if(err) {return errorHandler(err)};
       for(let i = 0; i < s.request.length; i++) {
         if(s.request[i].userId === receiverId) {
           s.request[i].remove();
-          s.save(err => {
+          s.save((err,user) => {
             if(err) {return errorHandler(err)}
+            return user;
           });
         }
       }
@@ -225,13 +235,13 @@ async function connexionRequest(item) {
       for(let i = 0; i < r.sendRequest.length; i++) {
         if(r.sendRequest[i].userId === currentUserId) {
           r.sendRequest[i].remove();
-          r.save(err => {
+          r.save((err, user) => {
             if(err) {return errorHandler(err)}
+            return user;
           });
         }
       }
     });
-    return user$
   }
 
   const sender = await User.findById(item.senderId, function (err, s) {
@@ -247,5 +257,6 @@ async function connexionRequest(item) {
     });
   })
   return true;
+
 
 }

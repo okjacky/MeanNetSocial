@@ -97,7 +97,7 @@ function initialize (server) {
         }
         if (conversation.participants.length > 1) {
           conversation.participants.splice(conversation.participants.indexOf(conversationData.userId), 1);
-          conversation.save();
+          conversation.save((err, concersationUpdated) => {socket.emit('onConversationList', concersationUpdated);} );
         } else {
           Conversation.deleteOne({ '_id': conversation._id }, function(err) {
             if (err) {
@@ -120,19 +120,16 @@ function initialize (server) {
             for (let instance of instances) {
               console.log('instance', instance.id);
               socket.broadcast.to(instance.id).emit('message', data.message);
-              // io.sockets.connected[instance.id].emit('message', data.message);
-              //socket.emit('message', data.message);
             }
             let myOtherInstances = searchConnections(socket.nom);
             if (myOtherInstances.length > 0) {
               for (let conn of myOtherInstances) {
-                console.log('conn', conn.id, myOtherInstances.length);
                 io.sockets.connected[conn.id].emit('message', data.message);
-                // exclude me
+                /** exclude me
                 if (conn !== socket) {
                   // io.sockets.connected[conn.id].emit('message', data.message);
                   // socket.broadcast.to(conn.id).emit('message', data.message);
-                }
+                }**/
               }
             }
           }
@@ -174,10 +171,10 @@ function initialize (server) {
     });
 
     socket.on('disconnect', () => {
-      let instances = searchConnections(socket.nom);
+      const instances = searchConnections(socket.nom);
       if (instances.length === 1) {
         let user = searchUser(socket.nom);
-        if (user != false) {
+        if (user !== false) {
           users.splice(users.indexOf(user), 1);
         }
       }
@@ -198,11 +195,10 @@ function initialize (server) {
 
 const searchUser = username => {
   for (let i = 0; i < users.length; i++) {
-    if (users[i].nom == username) {
+    if (users[i].nom === username) {
       return users[i];
     }
   }
-
   return false;
 };
 

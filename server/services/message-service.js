@@ -124,7 +124,8 @@ async function sendReply(conversationId, composedMessage) {
     if (err) {
       return errorHandler(err);
     }
-    return true;
+    let reponse = {success: true};
+    return reponse;
   });
 }
 

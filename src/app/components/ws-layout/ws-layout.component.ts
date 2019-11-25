@@ -46,6 +46,12 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
               private dialog: MatDialog,
               ) {
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.chatWith = params.get('chatWith');
+    });
+
+    this.getMessages(this.chatWith);
+    this.connectToChat();
   }
 
   ngOnInit() {
@@ -57,12 +63,7 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
       conversationId: new FormControl(''),
       body: new FormControl('', Validators.required),
     });
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      this.chatWith = params.get('chatWith');
-    });
 
-    this.getMessages(this.chatWith);
-    this.connectToChat();
   }
 
   ngOnDestroy() {
@@ -126,7 +127,6 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
     this.subscription.push(this.chatService
       .receiveActiveList()
       .subscribe((activesUsers) => {
-        console.log('activesUsers', activesUsers);
         if (activesUsers) {
           for (let i = 0; i < activesUsers.length; i++) {
             if (activesUsers[i].nom === this.currentUser.nom) {
@@ -157,7 +157,6 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
     this.subscription.push(this.chatService.getOneConversationByName(this.currentUser.nom, name)
       .subscribe((data) => {
         if (data.success === true) {
-          console.log('getMessage ', data);
           this.conversationId = data.conversation._id;
           const messages = data.messages || null;
           if (messages && messages.length > 0) {

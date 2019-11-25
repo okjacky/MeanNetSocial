@@ -84,7 +84,6 @@ export class MessageLayoutComponent implements OnInit, OnDestroy {
       this.isChatWith = false;
       this.isNewChat = true;
     }
-
     this.connectToChat();
   }
 
@@ -139,7 +138,6 @@ export class MessageLayoutComponent implements OnInit, OnDestroy {
     this.subscription.push(this.chatService
       .receiveActiveList()
       .pipe(first()).subscribe((activesUsers) => {
-        console.log('activesUsers', activesUsers);
         if (activesUsers) {
           console.log('activesUsers1', activesUsers);
           this.userOnline = activesUsers;
@@ -186,7 +184,8 @@ export class MessageLayoutComponent implements OnInit, OnDestroy {
             msg: 'la conversation est supprimée ...'
           }
         });
-        this.router.navigate(['/message']);
+        this.chatService.getConversationList(this.currentUser._id);
+        // this.router.navigate(['/message']);
       }
     });
   }
