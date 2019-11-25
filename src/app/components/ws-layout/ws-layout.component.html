@@ -38,7 +38,7 @@
                     (click)="replyMessage()">
               <mat-icon>send</mat-icon>
             </button>
-            <mat-hint *ngIf="isTyping" color="primary">est en train d'écrire ...</mat-hint>
+            <mat-hint *ngIf="isTyping" color="primary"><span>{{userTyping}}&nbsp;</span><i>est en train d'écrire ...</i></mat-hint>
           </mat-form-field>
         </form>
       </div>

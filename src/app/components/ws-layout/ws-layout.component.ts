@@ -29,6 +29,7 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
   username: string;
   chatWith: string;
   isTyping: Boolean = false;
+  userTyping: string;
   noMsg: boolean;
   noUserOnline: Boolean;
   conversationId: string;
@@ -91,6 +92,7 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
     this.subscription.push(this.chatService.receivedTyping()
       .subscribe((data) => {
         console.log('istapingData', data);
+        this.userTyping = data.data.user;
         this.isTyping = data.isTyping;
       }));
     this.subscription.push(this.chatService.receiveMessage()
