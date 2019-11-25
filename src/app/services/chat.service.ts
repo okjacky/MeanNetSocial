@@ -117,6 +117,19 @@ export class ChatService {
     return observable;
   }
 
+  typing(data) {
+    this.socket.emit('typing', data);
+  }
+
+  receivedTyping() {
+    const observable = new Observable<{ isTyping: boolean}>(observer => {
+      this.socket.on('typing', (data) => {
+        observer.next(data);
+      });
+    });
+    return observable;
+  }
+
   receiveActiveList(): any {
     const observable: Observable<User[]> = new Observable(observer => {
       this.socket.on('active', data => {
@@ -170,76 +183,4 @@ export class ChatService {
     };
     return this.http.delete<Boolean>(`/api/message/conversation/delete/${conversationId}`, optionsD);
   }
-  /**getConversation(name1: string, name2: string): any {
-    let url = this.apiUrl;
-    if (name2 != 'chat-room') {
-      let route = '/' + name1 + '/' + name2;
-      url += route;
-    }
-
-    let authToken = this.authService.getUserData().token;
-
-    // prepare the request
-    let headers = new Headers({
-      'Content-Type': 'application/json',
-      Authorization: authToken,
-    });
-    let options = new RequestOptions({ headers: headers });
-
-    // POST
-    let observableReq = this.http.get(url, options).map(this.extractData);
-
-    return observableReq;
-  }
-
-  getUserList(): any {
-    let url = this.usersUrl;
-
-    let authToken = this.authService.getUserData().token;
-
-    // prepare the request
-    let headers = new Headers({
-      'Content-Type': 'application/json',
-      Authorization: authToken,
-    });
-    let options = new RequestOptions({ headers: headers });
-
-    // POST
-    let observableReq = this.http.get(url, options).map(this.extractData);
-
-    return observableReq;
-  }
-
-  receiveMessage(): any {
-    let observable = new Observable(observer => {
-      this.socket.on('message', (data: Message) => {
-        observer.next(data);
-      });
-    });
-
-    return observable;
-  }
-
-  receiveActiveList(): any {
-    let observable = new Observable(observer => {
-      this.socket.on('active', data => {
-        observer.next(data);
-      });
-    });
-
-    return observable;
-  }
-
-  sendMessage(message: Message, chatWith: string): void {
-    this.socket.emit('message', { message: message, to: chatWith });
-  }
-
-  getActiveList(): void {
-    this.socket.emit('getactive');
-  }
-
-  extractData(res: Response): any {
-    let body = res.json();
-    return body || {};
-  }**/
 }

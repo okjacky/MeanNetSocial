@@ -169,6 +169,22 @@ function initialize (server) {
           socket.emit('onGetMessages', messages);
         });
     });
+    // Event when a client is typing
+    socket.on('typing', (data) => {
+      if (data.to === 'chat-room') {
+        io.to('chat-room').emit('typing', {data: data, isTyping: true});
+      } else {
+        let user = searchUser(data.to);
+        if (user != false) {
+          let instances = searchConnections(data.to);
+          if (instances.length > 0) {
+            for (let instance of instances) {
+              socket.broadcast.to(instance.id).emit('typing', {data: data, isTyping: true});
+            }
+          }
+        }
+      }
+    });
 
     socket.on('disconnect', () => {
       const instances = searchConnections(socket.nom);

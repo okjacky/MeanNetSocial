@@ -28,9 +28,7 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
   showActive: boolean;
   username: string;
   chatWith: string;
-  currentOnline: boolean;
-  receiveMessageObs: any;
-  receiveActiveObs: any;
+  isTyping: Boolean = false;
   noMsg: boolean;
   noUserOnline: Boolean;
   conversationId: string;
@@ -90,6 +88,11 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
 
   initReceivers(): void {
     this.getUserList();
+    this.subscription.push(this.chatService.receivedTyping()
+      .subscribe((data) => {
+        console.log('istapingData', data);
+        this.isTyping = data.isTyping;
+      }));
     this.subscription.push(this.chatService.receiveMessage()
       .subscribe(message => {
         console.log('receiveMessage', message);
@@ -99,6 +102,7 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
           this.noMsg = false;
           this.messageList.push(message);
           this.scrollToBottom();
+          this.isTyping = false;
           // this.msgSound();
         } else if (message.mine !== true) {
           this._snackBar.openFromComponent(SnackBarAddUserComponent, {
@@ -194,6 +198,10 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
       this.chatService.sendMessage(this.replyMessageForm.value, this.chatWith);
       this.replyMessageForm.reset();
     }
+  }
+
+  typing() {
+    this.chatService.typing({user: this.currentUser.nom, to: this.chatWith} );
   }
 
   checkMine(message: Chat): void {

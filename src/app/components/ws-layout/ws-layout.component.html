@@ -25,6 +25,7 @@
         <form [formGroup]="replyMessageForm" >
           <mat-form-field style="width: 100%" appearance="fill">
             <textarea matInput placeholder="Rédiger un message ..."
+                      (keypress)="typing()"
                       formControlName="body"
                       cdkTextareaAutosize
                       cdkAutosizeMaxRows="5"
@@ -37,6 +38,7 @@
                     (click)="replyMessage()">
               <mat-icon>send</mat-icon>
             </button>
+            <mat-hint *ngIf="isTyping" color="primary">est en train d'écrire ...</mat-hint>
           </mat-form-field>
         </form>
       </div>
