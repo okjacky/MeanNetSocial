@@ -91,8 +91,8 @@ export class WsLayoutComponent implements OnInit, OnDestroy {
     this.getUserList();
     this.subscription.push(this.chatService.receivedTyping()
       .subscribe((data) => {
-        console.log('istapingData', data);
-        this.userTyping = data.data.user;
+        console.log('istapingData', data.user);
+        this.userTyping = data.user;
         this.isTyping = data.isTyping;
       }));
     this.subscription.push(this.chatService.receiveMessage()

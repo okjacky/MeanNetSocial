@@ -122,7 +122,7 @@ export class ChatService {
   }
 
   receivedTyping() {
-    const observable = new Observable(observer => {
+    const observable = new Observable<{ isTyping: boolean, user: string}>(observer => {
       this.socket.on('typing', (data) => {
         observer.next(data);
       });

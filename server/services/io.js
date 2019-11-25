@@ -172,7 +172,7 @@ function initialize (server) {
     // Event when a client is typing
     socket.on('typing', (data) => {
       if (data.to === 'chat-room') {
-        io.to('chat-room').emit('typing', {data: data, isTyping: true});
+        io.to('chat-room').emit('typing', {user: data.user, isTyping: true});
       } else {
         let user = searchUser(data.to);
         if (user != false) {
