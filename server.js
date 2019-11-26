@@ -65,6 +65,7 @@ app.use(function (req, res, next) {
 // init server http et io
 // const server = http.createServer(app);
 io(server);
+// faker(2)
 
 // API routes
 app.use('/api/users', userController );
