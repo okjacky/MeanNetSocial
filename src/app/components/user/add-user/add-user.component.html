@@ -33,7 +33,7 @@
             </mat-form-field>
             <mat-form-field>
               <mat-label>Role</mat-label>
-              <mat-select formControlName="role" [disabled]="" required>
+              <mat-select formControlName="role" [disabled]="!isAdmin" required>
                 <mat-option value= "Admin">Admin</mat-option>
                 <mat-option value= "User">User</mat-option>
               </mat-select>

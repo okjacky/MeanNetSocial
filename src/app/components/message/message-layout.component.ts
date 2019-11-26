@@ -185,9 +185,9 @@ export class MessageLayoutComponent implements OnInit, OnDestroy {
           }
         });
         this.chatService.getConversationList(this.currentUser._id);
-        // this.router.navigate(['/message']);
       }
     });
+    this.router.navigate(['/message']);
     this.ngOnInit();
   }
   compareByUsername(a, b): number {
