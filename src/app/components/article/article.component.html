@@ -1,0 +1,76 @@
+<div fxLayout="column"  fxLayoutGap="2%" >
+
+  <mat-card style="width: 100%;">
+    <mat-card-header fxLayoutGap="3%">
+      <div mat-card-avatar>
+          <span>
+            <ngx-avatar
+              mat-card-avatar
+              name={{wasteNow.author.nom}}
+              src={{wasteNow.author.image}}
+              value="28%"
+              size="50" [round]="true">
+            </ngx-avatar>
+          </span>
+      </div>
+      <mat-card-title>{{wasteNow.author.nom}}</mat-card-title>
+      <mat-card-subtitle>posté -- <i>{{updateFromNow(wasteNow.date)}}</i></mat-card-subtitle>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <mat-card-content >
+      <br>
+      <p>{{wasteNow.body}}</p>
+    </mat-card-content>
+    <div fxLayout="row" fxLayoutAlign="stert center" fxLayoutGap="3%">
+      <p><span>{{wasteNow.like.length}} &nbsp;</span>likes</p>
+      <p><span>{{commentListe.length}} &nbsp;</span>Comments</p>
+    </div>
+    <mat-card-actions>
+      <mat-divider></mat-divider>
+      <button mat-button>
+        <mat-icon matPrefix>thumb_up_alt</mat-icon>
+        like
+      </button>
+      <button mat-button (click)="onClickComment(wasteNow._id)">
+        <mat-icon matPrefix>chat</mat-icon>
+        Comment
+      </button>
+    </mat-card-actions>
+    <!----------------------------comments---------------------------->
+    <div *ngIf="showComment" fxLayout="column" fxLayoutGap="3%">
+      <div style="width: 100%;" fxLayout="row" fxLayoutGap="1%" *ngFor="let comment of commentListe">
+        <div mat-card-avatar>
+            <span>
+              <ngx-avatar
+                mat-card-avatar
+                name={{comment.author.nom}}
+                src={{comment.author.image}}
+                value="28%"
+                size="35" [round]="true">
+              </ngx-avatar>
+            </span>
+        </div>
+        <div fxLayout="column" style="background-color: slategray; border-radius: 0px 10px 10px 10px; padding: 10px;">
+          <b>{{comment.author.nom}}</b>
+          <small>posté -- <i>{{updateFromNow(comment.date)}}</i></small>
+          <p>{{comment.body}}</p>
+        </div>
+
+      </div>
+      <form [formGroup] = commentForm fxLayout="column" style="width: 100%">
+        <mat-form-field appearance="fill">
+          <mat-label>Ecrire votre commentaire</mat-label>
+          <textarea formControlName="body"
+                    matInput
+                    placeholder="200 caractères max !"
+                    cdkTextareaAutosize
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5"
+          ></textarea>
+          <mat-error>Ecrire un commentaire est OBLIGATOIRE</mat-error>
+          <button matSuffix type="submit" mat-mini-fab color = "primary" (click)="sendComment(wasteNow._id)" [disabled]="commentForm.invalid"><mat-icon>send</mat-icon></button>
+        </mat-form-field>
+      </form>
+    </div>
+  </mat-card>
+</div>
