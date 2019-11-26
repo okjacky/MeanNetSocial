@@ -13,6 +13,8 @@ mongoose.Promise = global.Promise;
 module.exports = {
   User: require('../models/user.model'),
   Chat: require('../models/chat.model'),
+  Waste: require('../models/waste.model'),
+  Comment: require('../models/comment.model'),
   Message: require('../models/message.model'),
   Conversation: require('../models/conversation.model'),
 

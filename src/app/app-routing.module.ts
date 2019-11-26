@@ -13,6 +13,7 @@ import {ChangerMdpComponent} from './components/user/changer-mdp/changer-mdp.com
 import {MessageLayoutComponent} from './components/message/message-layout.component';
 import {GetConversationComponent} from './components/message/get-conversation/get-conversation.component';
 import {WsLayoutComponent} from './components/ws-layout/ws-layout.component';
+import {ArticleComponent} from './components/article/article.component';
 
 const routes: Routes = [
   // Admin && User && public
@@ -28,6 +29,8 @@ const routes: Routes = [
   {path: 'profil/:id', component: ProfilComponent, canActivate: [AuthGuard],
     data: { roles: [Role.User, Role.Admin] }},
   {path: 'editUser/:id', component: EditUserComponent, canActivate: [AuthGuard],
+    data: { roles: [Role.User, Role.Admin] }},
+  {path: 'article/:wasteId', component: UserLayoutComponent, canActivate: [AuthGuard],
     data: { roles: [Role.User, Role.Admin] }},
   {path: 'reseau', component: ReseauComponent, canActivate: [AuthGuard],
     data: { roles: [Role.User, Role.Admin] }},

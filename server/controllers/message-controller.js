@@ -19,13 +19,11 @@ router.delete('/conversation/delete/:conversationId', _deleteConversation);
 module.exports = router;
 
 async function getAllConversations(req, res, next) {
-  const userId = req.params.id
-  console.log('mc getAllConversations', userId);
+  const userId = req.params.id;
   await Conversation.find({ participants: userId })
     .select('_id')
     .exec(function(err, conversations) {
       if (err || conversations === null) {
-        console.log('err conversations')
         const reponse = {success: false, conversation: null};
         res.status(200).json(reponse);
       }
@@ -43,10 +41,8 @@ async function getAllConversations(req, res, next) {
             if (err) {
               return errorHandler(err);
             }
-            console.log('messgae getAllConversations**', message[0]);
             fullConversations.push(message[0]);
             ;
-            console.log('fullConversations getAllConversations', fullConversations.length, conversations.length);
             if(fullConversations.length === conversations.length) {
               const reponse = {success: true, conversation: fullConversations};
               res.status(200).json(reponse);
@@ -57,8 +53,7 @@ async function getAllConversations(req, res, next) {
 }
 
 async function getOneConversation(req, res, next) {
-  const conversationId = req.params.conversationId
-  console.log('mc getOneConversation', conversationId);
+  const conversationId = req.params.conversationId;
   await Message.find({ conversationId: conversationId })
     .sort('createdAt')
     .populate({
@@ -69,17 +64,14 @@ async function getOneConversation(req, res, next) {
       if (err) {
         return errorHandler(err);
       }
-      console.log('mc messages getOneConversation', messages);
       res.status(200).json({ msg: messages });
     });
 }
 
 function sendReply(req, res, next) {
-  console.log('mc reply', req.params.conversationId, req.body);
   messageService.sendReply(req.params.conversationId, req.body)
     .then((sendSuccess) => {
       if(sendSuccess) {
-        console.log('replu success', sendSuccess)
         res.status(200).json({ message: 'Reply successfully sent!' });
       }
     })
@@ -88,7 +80,6 @@ function sendReply(req, res, next) {
 
 async function newConversation(req, res, next) {
   const composedMessage = req.body;
-  console.log('newConversation', composedMessage);
   if(!composedMessage) {
     return;
   }
@@ -109,7 +100,6 @@ async function newConversation(req, res, next) {
       if (err) {
         return errorHandler(err);
       }
-      console.log('ms: ', newMessage);
       res.status(200).json(newMessage);
     });
   });

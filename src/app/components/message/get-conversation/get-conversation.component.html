@@ -39,9 +39,10 @@
                   #autosize="cdkTextareaAutosize">
         </textarea>
         <button color="primary"
+                mat-mini-fab
                 matSuffix mat-raised-button
                 [disabled]="replyMessageForm.invalid"
-                (click)="replyMessage()">Envoyer
+                (click)="replyMessage()">
           <mat-icon>send</mat-icon>
         </button>
       </mat-form-field>

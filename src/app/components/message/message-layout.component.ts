@@ -115,8 +115,9 @@ export class MessageLayoutComponent implements OnInit, OnDestroy {
 
   getConversationList(): void {
     this.subscription.push(this.chatService.receiveConversationList()
-      .pipe(first()).subscribe((conversationList) => {
+      .subscribe((conversationList) => {
         if (conversationList) {
+          console.log('getConversationList', conversationList);
           this.conversationsList = conversationList;
           this.noMsg = false;
         } else {
@@ -137,11 +138,10 @@ export class MessageLayoutComponent implements OnInit, OnDestroy {
   getUserList(): void {
     this.subscription.push(this.chatService
       .receiveActiveList()
-      .pipe(first()).subscribe((activesUsers) => {
+      .subscribe((activesUsers) => {
         if (activesUsers) {
           console.log('activesUsers1', activesUsers);
-          this.userOnline = activesUsers;
-          /**for (let i = 0; i < activesUsers.length; i++) {
+          for (let i = 0; i < activesUsers.length; i++) {
             if (activesUsers[i].nom === this.currentUser.nom) {
               activesUsers.splice(i, 1);
               this.userOnline = activesUsers;
@@ -152,7 +152,7 @@ export class MessageLayoutComponent implements OnInit, OnDestroy {
                 this.noUserOnline = false;
               }
             }
-          }**/
+          }
         } else {
           this.noUserOnline = true;
           this.dialog.open(DialogMdpOublieComponent, {
@@ -188,6 +188,7 @@ export class MessageLayoutComponent implements OnInit, OnDestroy {
         // this.router.navigate(['/message']);
       }
     });
+    this.ngOnInit();
   }
   compareByUsername(a, b): number {
     if (a.nom < b.nom) {

@@ -84,7 +84,6 @@ function initialize (server) {
               });
           });
         });
-
     });
 
     socket.on('deleteConversation', (conversationData) => {
@@ -97,16 +96,24 @@ function initialize (server) {
         }
         if (conversation.participants.length > 1) {
           conversation.participants.splice(conversation.participants.indexOf(conversationData.userId), 1);
-          conversation.save((err, concersationUpdated) => {socket.emit('onConversationList', concersationUpdated);} );
+          conversation.save((err, concersationUpdated) => {
+            if (err) {
+              return errorHandler(err);
+            }
+            socket.emit('onConversationList', concersationUpdated);
+            socket.emit('deleteConversationSuccess', concersationUpdated);
+          } );
         } else {
           Conversation.deleteOne({ '_id': conversation._id }, function(err) {
             if (err) {
               return errorHandler(err);
             }
+            socket.emit('deleteConversationSuccess', concersationUpdated);
           });
         }
       });
     });
+
     /*************************Messages Handler**************************/
     socket.on('message', (data) => {
       console.log('user on message io', data);
@@ -172,14 +179,14 @@ function initialize (server) {
     // Event when a client is typing
     socket.on('typing', (data) => {
       if (data.to === 'chat-room') {
-        io.to('chat-room').emit('typing', {user: data.user, isTyping: true});
+        socket.broadcast.to('chat-room').emit('typing', {user: data.user, isTyping: true});
       } else {
         let user = searchUser(data.to);
         if (user != false) {
           let instances = searchConnections(data.to);
           if (instances.length > 0) {
             for (let instance of instances) {
-              socket.broadcast.to(instance.id).emit('typing', {data: data, isTyping: true});
+              socket.broadcast.to(instance.id).emit('typing', {user: data.user, isTyping: true});
             }
           }
         }

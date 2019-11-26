@@ -7,6 +7,7 @@ import {Time} from '@angular/common';
 import {DialogMdpOublieComponent} from '../user/mdp-oublie/mdp-oublie.component';
 import {MatDialog} from '@angular/material';
 import {Role} from '../../models';
+import {WasteService} from '../../services/waste.service';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,8 @@ export class HomeComponent implements OnInit {
   constructor( private userService: UserService,
                private authenticationService: AuthenticationService,
                private router: Router,
-               private dialog: MatDialog) {
+               private dialog: MatDialog,
+               private wasteService: WasteService) {
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
   ngOnInit() {
@@ -37,6 +39,7 @@ export class HomeComponent implements OnInit {
       this.isLoading = false;
       this.userFromApi = users;
       });
+
   }
 
   get isAdmin() {

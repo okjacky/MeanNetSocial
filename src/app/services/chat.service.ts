@@ -70,6 +70,8 @@ export class ChatService {
   receiveConversationList() {
     const observable = new Observable(observer => {
       this.socket.on('onConversationList', (data: Message[]) => {
+
+        console.log('onConversationList cTS', data);
         observer.next(data);
       });
     });

@@ -75,7 +75,7 @@ async function getOneConversation(userId) {
     .sort('-createdAt')
     .populate({
       path: 'author',
-      select: 'profile.prenom profile.nom'
+      select: 'prenom nom image'
     })
     .exec(function(err, messages) {
       if (err) {

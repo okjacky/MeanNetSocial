@@ -18,6 +18,7 @@ import {DialogMdpOublieComponent} from './mdp-oublie/mdp-oublie.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { AvatarModule } from 'ngx-avatar';
 import { ChangerMdpComponent } from './changer-mdp/changer-mdp.component';
+import { ArticleComponent } from '../article/article.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ChangerMdpComponent } from './changer-mdp/changer-mdp.component';
     MdpOublieComponent,
     DialogMdpOublieComponent,
     EditUserComponent,
-    ChangerMdpComponent
+    ChangerMdpComponent,
+    ArticleComponent
   ],
   imports: [
     BrowserAnimationsModule,

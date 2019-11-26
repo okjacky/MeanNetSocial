@@ -1,7 +1,7 @@
 <div *ngIf="isAdmin" style="border: 1px solid red; margin-top: 5px" fxLayoutAlign="center">
   <h2>Welcome Admin</h2>
 </div>
-<div class="containerBody" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px"  >
+<div fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px"  >
 
   <!-----------userId Profil--------------------->
   <div fxLayout="column" fxFlex="35%" fxLayoutGap="2%">
@@ -80,42 +80,108 @@
     </mat-nav-list>
   </div>
   <!---------------UserId Posts--------------->
-  <div fxLayout="column" fxFlex="60%" fxLayoutGap="2%">
-    <mat-card>
-      <h3 >Commencer un article </h3>
-      <form [formGroup] = articleForm fxLayout="column" style="width: 100%">
-        <mat-form-field appearance="fill" >
-          <mat-label>Donner un titre</mat-label>
-          <input formControlName="titre" matInput placeholder="20 caractères max !"  >
-          <mat-error>le titre est OBLIGATOIRE</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Ecrire votre article</mat-label>
-          <textarea formControlName="article" matInput placeholder="100 caractères max !"></textarea>
-          <mat-error>Ecrire un article est OBLIGATOIRE</mat-error>
-        </mat-form-field>
-      </form>
-      <mat-card-actions align="end">
-        <button type="submit" mat-stroked-button color = "primary" (click)="publierArticle()" [disabled]="articleForm.invalid">Publier</button>
-      </mat-card-actions>
+  <div fxLayout="column" fxFlex="60%" fxLayoutGap="2%" >
+    <app-article *ngIf="isArticle" [wasteId]="wasteId$"></app-article>
+    <div *ngIf="!isArticle" fxLayout="column" fxLayoutGap="2%">
+      <mat-card style="width: 100%;">
+        <h3 >Commencer un article </h3>
+        <form [formGroup] = articleForm fxLayout="column" style="width: 100%">
+          <mat-form-field appearance="fill" >
+            <mat-label>Donner un titre</mat-label>
+            <input formControlName="title" matInput placeholder="20 caractères max !"  >
+            <mat-error>le titre est OBLIGATOIRE</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Ecrire votre article</mat-label>
+            <textarea formControlName="body"
+                      matInput
+                      placeholder="200 caractères max !"
+                      cdkTextareaAutosize
+                      #autosize="cdkTextareaAutosize"
+                      cdkAutosizeMinRows="1"
+                      cdkAutosizeMaxRows="5"
+            ></textarea>
+            <mat-error>Ecrire un article est OBLIGATOIRE</mat-error>
+          </mat-form-field>
+        </form>
+        <mat-card-actions align="end">
+          <button type="submit" mat-stroked-button color = "primary" (click)="publierArticle()" [disabled]="articleForm.invalid">Publier</button>
+        </mat-card-actions>
+      </mat-card >
+      <mat-card style="width: 100%;" *ngFor="let waste of wasteList">
+        <mat-card-header fxLayoutGap="3%">
+          <div mat-card-avatar>
+          <span>
+            <ngx-avatar
+              mat-card-avatar
+              name={{waste.author.nom}}
+              src={{waste.author.image}}
+              value="28%"
+              size="50" [round]="true">
+            </ngx-avatar>
+          </span>
+          </div>
+          <mat-card-title>{{waste.author.nom}}</mat-card-title>
+          <mat-card-subtitle>posté -- <i>{{updateFromNow(waste.date)}}</i></mat-card-subtitle>
+        </mat-card-header>
+        <mat-divider></mat-divider>
+        <mat-card-content >
+          <br>
+          <p>{{waste.body}}</p>
+        </mat-card-content>
+        <div fxLayout="row" fxLayoutAlign="stert center" fxLayoutGap="3%">
+          <p><span>{{waste.like.length}}&nbsp;</span>likes</p>
+        </div>
+        <mat-card-actions>
+          <mat-divider></mat-divider>
+          <button mat-button (click)="onClickLike(waste._id)">
+            <mat-icon matPrefix>thumb_up_alt</mat-icon>
+            like
+          </button>
+          <button mat-button (click)="onClickComment(waste._id)">
+            <mat-icon matPrefix>chat</mat-icon>
+            Comment
+          </button>
+        </mat-card-actions>
+        <!----------------------------comments---------------------------->
+        <div *ngIf="showComment" fxLayout="column" fxLayoutGap="3%">
+          <div style="width: 100%;" fxLayout="row" fxLayoutGap="1%">
+            <div mat-card-avatar>
+            <span>
+              <ngx-avatar
+                mat-card-avatar
+                name={{waste.author.nom}}
+                src={{waste.author.image}}
+                value="28%"
+                size="35" [round]="true">
+              </ngx-avatar>
+            </span>
+            </div>
+            <div fxLayout="column" style="background-color: slategray; border-radius: 0px 10px 10px 10px; padding: 10px;">
+              <b>{{waste.author.nom}}</b>
+              <small>posté -- <i>{{updateFromNow(waste.date)}}</i></small>
+              <p>conten bujzlihlefl bzfgoihlolzejf kgfoiahlzkfize klihfiozelhfpmzeifl kihfiozefhil iazfpiz zlfz</p>
+            </div>
 
-    </mat-card>
-    <mat-card>
-      <mat-card-content>
-        <p>Hac recipiant additumque quoniam mundi morborum professio quam medendi ad est remedium quos domum satis omnis videat est ad etiam. </p>
+          </div>
+          <form [formGroup] = commentForm fxLayout="column" style="width: 100%">
+            <mat-form-field appearance="fill">
+              <mat-label>Ecrire votre commentaire</mat-label>
+              <textarea formControlName="body"
+                        matInput
+                        placeholder="200 caractères max !"
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="1"
+                        cdkAutosizeMaxRows="5"
+              ></textarea>
+              <mat-error>Ecrire un commentaire est OBLIGATOIRE</mat-error>
+              <button matSuffix type="submit" mat-mini-fab color = "primary" (click)="publierComment(waste._id)" [disabled]="commentForm.invalid"><mat-icon>send</mat-icon></button>
+            </mat-form-field>
+          </form>
+        </div>
+      </mat-card>
+    </div>
 
-      </mat-card-content>
-      <mat-card-actions align="end" fxLayout="row" fxLayoutGap=" 20px" >
-        <button mat-mini-fab color="primary">
-          <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon>
-        </button>
-        <button mat-mini-fab color="primary">
-          <mat-icon class="example-icon" aria-hidden="false" aria-label="Example delete icon">delete</mat-icon>
-        </button>
-
-
-      </mat-card-actions>
-    </mat-card>
   </div>
 
 </div>
