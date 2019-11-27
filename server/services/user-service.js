@@ -7,6 +7,8 @@ const db = require('../helpers/db');
 const User = db.User;
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const { google } = require("googleapis");
+const OAuth2 = google.auth.OAuth2;
 require('dotenv').config();
 
 module.exports = {
@@ -25,17 +27,25 @@ module.exports = {
   connexionRequest
 };
 
+const oauth2Client = new OAuth2(
+  process.env.CLIENT_ID,
+  process.env.CLIENT_SECRET,
+  "https://developers.google.com/oauthplayground" // Redirect URL
+);
+oauth2Client.setCredentials({
+  refresh_token: process.env.REFRESH_TOKEN
+});
+const accessToken = oauth2Client.getAccessToken()
+
 const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true,
+  service: "gmail",
   auth: {
-    user: process.env.GMAIL_LOGIN,
-    pass: process.env.GMAIL_PWD
-  },
-  tls: {
-    // do not fail on invalid certs
-    rejectUnauthorized: false
+      type: "OAuth2",
+      user: "ookjacky@gmail.com", 
+      clientId: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
+      refreshToken: process.env.REFRESH_TOKEN,
+      accessToken: process.env.ACCESS_TOKEN
   }
 });
 
