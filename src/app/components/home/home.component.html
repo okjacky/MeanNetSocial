@@ -4,20 +4,9 @@
 <div class="containerBody" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20PX"  >
 
   <div fxLayout="column" fxHide.xs fxFlex="30%" fxLayoutGap="5PX">
-
-    <mat-card >
-      <h3>Listes des membres</h3>
-      <p>membres connectés</p>
-      <mat-divider></mat-divider>
-      <h3>Messages</h3>
-      <p>Nombre de message</p>
-      <ul *ngFor="let member of userFromApi; let i = index">
-        <li>{{i}} {{member._id}}</li>
-      </ul>
-    </mat-card>
-
+    <app-ws-online></app-ws-online>
   </div>
-  <div fxLayout="column" fxLayoutGap="3%" fxFlex="70%">
+  <div fxLayout="column" fxLayoutGap="3%" fxFlex="65%">
     <mat-card>
       <mat-card-header>
         <h3 >A propos</h3>
@@ -36,13 +25,15 @@
         </mat-progress-spinner>
       </mat-card-content>
     </mat-card>
-    <mat-grid-list cols="9" rowHeight="200px" gutterSize="10px" style="overflow: auto; min-height: 200px;">
-      <mat-grid-tile
-        *ngFor="let member of userFromApi"
-        [colspan]="3"
-        [rowspan]="1"
-        [style.background] = "'#424242'">
-        <div fxLayout="column" style="width: 100%; padding: 5px;" fxLayoutAlign="center center" fxLayoutGap="3%">
+    <!-------------------------GridUser-------------------------->
+    <div>
+      <mat-grid-list cols="9" rowHeight="200px" gutterSize="10px" style="overflow: auto; min-height: 200px;">
+        <mat-grid-tile
+          *ngFor="let member of userFromApi"
+          [colspan]="3"
+          [rowspan]="1"
+          [style.background] = "'#424242'">
+          <div fxLayout="column" style="width: 100%; padding: 5px;" fxLayoutAlign="center center" fxLayoutGap="3%">
           <span mat-button [routerLink]="['/profil', member._id]">
             <ngx-avatar class="pointer"
                         mat-card-avatar
@@ -52,15 +43,18 @@
                         size="60" [round]="true">
             </ngx-avatar>
           </span>
-          <b class="pointer" [routerLink]="['/profil', member._id]">{{member.prenom}}</b>
-          <i class="pointer" [routerLink]="['/profil', member._id]">{{member.presentation}}</i>
-          <div fxLayout="row" fxLayoutGap="3%">
-            <button *ngIf="isAdmin"  color="primary" mat-stroked-button (click)="deleteUser(member)">Suprimer User</button>
-            <button color="primary" mat-raised-button (click)="friendRequest(member)">Se connecter</button>
-          </div>
+            <b class="pointer" [routerLink]="['/profil', member._id]">{{member.prenom}}</b>
+            <i class="pointer" [routerLink]="['/profil', member._id]">{{member.presentation}}</i>
+            <div fxLayout="row" fxLayoutGap="3%">
+              <button *ngIf="isAdmin"  color="primary" mat-stroked-button (click)="deleteUser(member)">Suprimer User</button>
+              <button color="primary" mat-raised-button (click)="friendRequest(member)" >Se connecter</button>
+            </div>
 
-        </div>
-      </mat-grid-tile>
-    </mat-grid-list>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+    </div>
+
   </div>
 </div>

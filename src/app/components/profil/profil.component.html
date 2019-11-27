@@ -33,6 +33,12 @@
             <h4 matLine>email</h4>
             <p matSuffix color="green" > {{member.email}} </p>
           </mat-list-item>
+          <mat-list-item>
+            <mat-icon matListIcon routerLink="reseau">people_alt</mat-icon>
+            <h4 matLine>Relations</h4>
+            <p matSuffix="" > {{member.followers.length}} </p>
+
+          </mat-list-item>
         </mat-list>
       </mat-card-content>
       <mat-card-actions align="end">
@@ -42,38 +48,74 @@
       </mat-card-actions>
     </mat-card>
     <!-----------liste des amis------------------>
-    <mat-card class="example-card">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Mes Amis</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p>
-          Liste des nom here ... ngif
-        </p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>Voir son profil</button>
-      </mat-card-actions>
-    </mat-card>
+    <mat-nav-list style="overflow: auto; width: 100%; height: 500px; border: 1px solid gray;">
+      <mat-list-item *ngFor="let ami of mesAmis">
+        <mat-divider></mat-divider>
+        <span matListAvatar [routerLink]="['/profil', ami._id]">
+          <ngx-avatar
+            mat-card-avatar
+            name={{ami.pseudo}}
+            src={{ami.image}}
+            value="28%"
+            size="50" [round]="true">
+          </ngx-avatar>
+        </span>
+        <i matLine [routerLink]="['/profil', ami._id]">{{ami.prenom}}</i>
+        <h3 matLine [routerLink]="['/profil', ami._id]">{{ami.nom}}</h3>
+        <button mat-icon-button *ngIf="isAdmin" [routerLink]="['/editUser', ami._id]" profil>
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button >
+          <mat-icon>mail_outline</mat-icon>
+        </button>
+        <button mat-icon-button >
+          <mat-icon>chat</mat-icon>
+        </button>
+        <button mat-icon-button *ngIf="isAdmin" (click)="deleteUser(ami)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-nav-list>
   </div>
   <!---------------UserId Posts--------------->
-  <div fxLayout="column" fxFlex="60%">
-    <mat-card>
-      <mat-card-content>
-        <p>Hac recipiant additumque quoniam mundi morborum professio quam medendi ad est remedium quos domum satis omnis videat est ad etiam. </p>
-
+  <div fxLayout="column" fxFlex="60%" fxLayoutGap="2%" >
+    <mat-card style="width: 100%;" *ngFor="let waste of wasteList">
+      <mat-card-header fxLayoutGap="3%">
+        <div mat-card-avatar>
+          <span>
+            <ngx-avatar
+              mat-card-avatar
+              name={{waste.author.nom}}
+              src={{waste.author.image}}
+              value="28%"
+              size="50" [round]="true">
+            </ngx-avatar>
+          </span>
+        </div>
+        <mat-card-title>{{waste.author.nom}}</mat-card-title>
+        <mat-card-subtitle>posté -- <i>{{updateFromNow(waste.date)}}</i></mat-card-subtitle>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <mat-card-content >
+        <br>
+        <p>{{waste.body}}</p>
       </mat-card-content>
-      <mat-card-actions align="end" fxLayout="row" fxLayoutGap=" 20px" >
-        <button mat-mini-fab color="primary">
-          <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon>
+      <div fxLayout="row" fxLayoutAlign="stert center" fxLayoutGap="3%">
+        <p><span>{{waste.like.length}}&nbsp;</span>likes</p>
+      </div>
+      <mat-card-actions>
+        <mat-divider></mat-divider>
+        <button mat-button (click)="onClickLike(waste._id)">
+          <mat-icon matPrefix>thumb_up_alt</mat-icon>
+          like
         </button>
-        <button mat-mini-fab color="primary">
-          <mat-icon class="example-icon" aria-hidden="false" aria-label="Example delete icon">delete</mat-icon>
+        <button mat-button (click)="onClickComment(waste._id)">
+          <mat-icon matPrefix>chat</mat-icon>
+          Comment
         </button>
-
-
       </mat-card-actions>
+      <!----------------------------comments---------------------------->
+
     </mat-card>
   </div>
 

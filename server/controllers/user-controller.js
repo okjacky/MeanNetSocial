@@ -12,6 +12,7 @@ router.post('/login', login); // public route
 router.post('/signup', signup);
 router.get('/', getAll);
 router.post('/getEmail', getEmail);
+router.post('/getAmis', getAmis);
 router.get('/confirmation/:token', confirmationToken);
 router.get('/:id', getById);
 router.put('/:id', update);
@@ -89,6 +90,24 @@ function getEmail(req, res, next) {
     })
     .catch(err => next(err));
 }
+
+function getAmis(req, res, next) {
+  console.log('UC getAmis', req.body);
+  userService.getAmis(req.body)
+    .then((arrayAmis) => {
+      if(arrayAmis) {
+        console.log('UC getAmis if', arrayAmis);
+        // TODO : Bug du callback US
+        return res.status(200).json(arrayAmis);
+      } else {
+        return res.status(404).json({
+          msg: "Echec de trouver vos amis "
+        });
+      }
+    })
+    .catch(err => next(err));
+}
+
 function confirmationToken(req, res, next) {
   userService.confirmationToken(req.params.token)
     .then((tokenUser) => {
@@ -168,6 +187,7 @@ function connexionRequest(req, res, next) {
   console.log('uc connexionRequest', req.body);
   userService.connexionRequest(req.body)
     .then((user) => {
+      console.log('uc connexionRequest user', user);
       res.json(user);
     })
     .catch((err) => {

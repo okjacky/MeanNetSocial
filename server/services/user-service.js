@@ -16,6 +16,7 @@ module.exports = {
   getById,
   getByName,
   getEmail,
+  getAmis,
   update,
   updateAvatar,
   searchItem,
@@ -118,6 +119,15 @@ async function getById(id) {
   return await User.findById(id).select('-password');
 }
 
+async function getAmis(arrayAmis) {
+  console.log('if array', arrayAmis);
+  const a = [];
+  for(let i =0; i < arrayAmis.length; i++) {
+    a.push({_id: arrayAmis[i].userId});
+    return await User.find({$or: a}).select('-password');
+  }
+}
+
 async function getByName(name) {
   return await User.findOne({nom: name}).select('-password');
 }
@@ -182,35 +192,37 @@ async function _delete(id) {
 async function connexionRequest(item) {
 
   if (item.acceptRequest) {
-    console.log('us rcon');
+    console.log('us rcon', item);
     const currentUserId = item.acceptRequest.senderId;
     const receiverId = item.acceptRequest.receiverId;
-    await User.findById(currentUserId, function (err, s) {
+    return await User.findById(currentUserId, function (err, s) {
       if(err) {return errorHandler(err)};
       for(let i = 0; i < s.request.length; i++) {
         if(s.request[i].userId === receiverId) {
           s.request[i].remove();
+          s.followers.push({userId: receiverId});
+          s.save((err, user) => {
+            if(err) {return errorHandler(err)}
+            User.findById(receiverId, function (err, r) {
+              if(err) {return errorHandler(err)};
+              for(let i = 0; i < r.sendRequest.length; i++) {
+                if(r.sendRequest[i].userId === currentUserId) {
+                  r.sendRequest[i].remove()
+                  r.followers.push({userId: currentUserId});
+                  r.save((err, user )=> {
+                    if(err) {return errorHandler(err)}
+                    // return user
+                  });
+                }
+              }
+
+            })
+          });
         }
       }
-      s.followers.push({userId: receiverId});
-      s.save((err, user) => {
-        if(err) {return errorHandler(err)}
-        return user;
-      });
+
     })
-    await User.findById(receiverId, function (err, r) {
-      if(err) {return errorHandler(err)};
-      for(let i = 0; i < r.sendRequest.length; i++) {
-        if(r.sendRequest[i].userId === currentUserId) {
-          r.sendRequest[i].remove()
-        }
-      }
-      r.followers.push({userId: currentUserId});
-      r.save((err, user )=> {
-        if(err) {return errorHandler(err)}
-        return user
-      });
-    })
+
   }
 
   if (item.deleteRequest) {
@@ -218,45 +230,52 @@ async function connexionRequest(item) {
     const currentUserId = item.deleteRequest.senderId;
     const receiverId = item.deleteRequest.receiverId;
 
-    await User.findById(currentUserId, function (err, s) {
+    return await User.findById(currentUserId, function (err, s) {
       if(err) {return errorHandler(err)};
       for(let i = 0; i < s.request.length; i++) {
         if(s.request[i].userId === receiverId) {
           s.request[i].remove();
           s.save((err,user) => {
             if(err) {return errorHandler(err)}
-            return user;
-          });
-        }
-      }
-    });
-    await User.findById(receiverId, function (err, r) {
-      if(err) {return errorHandler(err)};
-      for(let i = 0; i < r.sendRequest.length; i++) {
-        if(r.sendRequest[i].userId === currentUserId) {
-          r.sendRequest[i].remove();
-          r.save((err, user) => {
-            if(err) {return errorHandler(err)}
-            return user;
+            // return user;
+            User.findById(receiverId, function (err, r) {
+              if(err) {return errorHandler(err)};
+              for(let i = 0; i < r.sendRequest.length; i++) {
+                if(r.sendRequest[i].userId === currentUserId) {
+                  r.sendRequest[i].remove();
+                  r.save((err, user) => {
+                    if(err) {return errorHandler(err)}
+                    // return user;
+                  });
+                }
+              }
+            });
           });
         }
       }
     });
   }
 
-  const sender = await User.findById(item.senderId, function (err, s) {
-    s.sendRequest.push({userId: item.receiver.receiverId, userNom: item.receiver.receiverNom, image: item.receiver.image});
-    s.save(err => {
-      if(err) {return errorHandler(err)}
+  if (item.sendRequest) {
+    const senderId = item.sendRequest.senderId;
+    const receiverId = item.sendRequest.receiver.receiverId;
+    const receiverNom = item.sendRequest.receiver.receiverNom;
+    const receiverImage = item.sendRequest.receiver.image;
+
+    const sender = await User.findById(senderId, function (err, s) {
+      console.log('s', s);
+      s.sendRequest.push({userId: receiverId, userNom: receiverNom, image: receiverImage});
+      s.save(err => {
+        if(err) {return errorHandler(err)}
       });
-  });
-  await User.findById(item.receiver.receiverId, function (err, r) {
-    r.request.push({userId: sender._id, userNom: sender.nom, image: sender.image});
-    r.save(err => {
-      if(err) {return errorHandler(err)}
     });
-  })
-  return true;
+    return await User.findById(receiverId, function (err, r) {
+      console.log('r', r);
+      r.request.push({userId: senderId, userNom: sender.nom, image: sender.image});
+      r.save(err => {
+        if(err) {return errorHandler(err)}
+      });
+    })
 
-
+  }
 }

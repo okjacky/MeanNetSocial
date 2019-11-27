@@ -41,12 +41,12 @@ export class DetailsUserComponent implements OnInit {
   }
   ngOnInit() {
     this.articleForm = this.fb.group({
-      title: new FormControl('', [Validators.required, Validators.maxLength(20)]),
-      body: new FormControl('', [Validators.required, Validators.maxLength(200)]),
+      title: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      body: new FormControl('', [Validators.required, Validators.maxLength(500)]),
       author: new FormControl(''),
     });
     this.commentForm = this.fb.group({
-      body: new FormControl('', [Validators.required, Validators.maxLength(200)]),
+      body: new FormControl('', [Validators.required, Validators.maxLength(500)]),
       author: new FormControl(''),
     });
 

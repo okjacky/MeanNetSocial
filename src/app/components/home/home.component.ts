@@ -3,11 +3,13 @@ import {User} from '../../models/user';
 import {AuthenticationService, UserService} from '../../services';
 import {first} from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {Time} from '@angular/common';
 import {DialogMdpOublieComponent} from '../user/mdp-oublie/mdp-oublie.component';
 import {MatDialog} from '@angular/material';
 import {Role} from '../../models';
 import {WasteService} from '../../services/waste.service';
+import {Subscription} from 'rxjs';
+import {Waste} from '../../models/waste';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-home',
@@ -18,6 +20,8 @@ export class HomeComponent implements OnInit {
   currentUser: User;
   userFromApi: User[];
   isLoading: Boolean = true;
+  subscription: Subscription[] = [];
+  wasteList: Waste[];
 
   constructor( private userService: UserService,
                private authenticationService: AuthenticationService,
@@ -27,19 +31,18 @@ export class HomeComponent implements OnInit {
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
   ngOnInit() {
-    /**const a = new Date(this.currentUser.date);
-    const aTime = a.getTime();
-    const bTimeNow  = new Date().getTime();
-    const cdif = bTimeNow - aTime;
-    const timedepuis = new Date(cdif).getDate();
-    console.log('home:', cdif);
-    console.log('timedepuis:', timedepuis);**/
     this.userService.getAll()
       .pipe(first()).subscribe(users => {
       this.isLoading = false;
-      this.userFromApi = users;
+        if (users) {
+          for (let i = 0; i < users.length; i++) {
+            if (users[i].nom === this.currentUser.nom) {
+              users.splice(i, 1);
+              this.userFromApi = users;
+            }
+          }
+        }
       });
-
   }
 
   get isAdmin() {
@@ -48,8 +51,10 @@ export class HomeComponent implements OnInit {
 
   friendRequest(receiver) {
     const request = {
-      senderId: this.currentUser._id,
-      receiver: { receiverId: receiver._id, receiverNom: receiver.nom, image: receiver.image},
+      sendRequest: {
+        senderId: this.currentUser._id,
+        receiver: { receiverId: receiver._id, receiverNom: receiver.nom, image: receiver.image},
+      }
     };
     this.userService.connexionRequest(request)
       .pipe(first()).subscribe((success) => {
@@ -85,5 +90,6 @@ export class HomeComponent implements OnInit {
         }
     });
   }
+
 
 }

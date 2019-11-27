@@ -13,7 +13,7 @@ export class User {
   sendRequest: [{_id: string, userId: string, userNom: string, image: string}];
   request: [{_id: string, userId: string, userNom: string, image: string}];
   following: string[];
-  followers: string[];
+  followers: [{_id: string, userId: string}];
   presentation: string;
   preferences: string;
   password: string;

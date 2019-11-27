@@ -17,7 +17,12 @@ module.exports = {
 };
 
 async function getAllWaste() {
-  return await Waste.find().sort('date');
+  return await Waste.find()
+    .sort('date')
+    .populate({
+      path: 'author',
+      select: 'prenom nom image '
+    });
 }
 
 async function getAllUserWaste(userId) {

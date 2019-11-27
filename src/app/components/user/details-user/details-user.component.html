@@ -37,7 +37,7 @@
           <mat-list-item>
             <mat-icon matListIcon routerLink="reseau">people_alt</mat-icon>
             <h4 matLine>Relations</h4>
-            <p matSuffix="" > {{currentUser.age}} </p>
+            <p matSuffix="" > {{currentUser.followers.length}} </p>
 
           </mat-list-item>
         </mat-list>
@@ -88,14 +88,14 @@
         <form [formGroup] = articleForm fxLayout="column" style="width: 100%">
           <mat-form-field appearance="fill" >
             <mat-label>Donner un titre</mat-label>
-            <input formControlName="title" matInput placeholder="20 caractères max !"  >
+            <input formControlName="title" matInput placeholder="100 caractères max !"  >
             <mat-error>le titre est OBLIGATOIRE</mat-error>
           </mat-form-field>
           <mat-form-field appearance="fill">
             <mat-label>Ecrire votre article</mat-label>
             <textarea formControlName="body"
                       matInput
-                      placeholder="200 caractères max !"
+                      placeholder="500 caractères max !"
                       cdkTextareaAutosize
                       #autosize="cdkTextareaAutosize"
                       cdkAutosizeMinRows="1"
@@ -144,41 +144,7 @@
           </button>
         </mat-card-actions>
         <!----------------------------comments---------------------------->
-        <div *ngIf="showComment" fxLayout="column" fxLayoutGap="3%">
-          <div style="width: 100%;" fxLayout="row" fxLayoutGap="1%">
-            <div mat-card-avatar>
-            <span>
-              <ngx-avatar
-                mat-card-avatar
-                name={{waste.author.nom}}
-                src={{waste.author.image}}
-                value="28%"
-                size="35" [round]="true">
-              </ngx-avatar>
-            </span>
-            </div>
-            <div fxLayout="column" style="background-color: slategray; border-radius: 0px 10px 10px 10px; padding: 10px;">
-              <b>{{waste.author.nom}}</b>
-              <small>posté -- <i>{{updateFromNow(waste.date)}}</i></small>
-              <p>conten bujzlihlefl bzfgoihlolzejf kgfoiahlzkfize klihfiozelhfpmzeifl kihfiozefhil iazfpiz zlfz</p>
-            </div>
 
-          </div>
-          <form [formGroup] = commentForm fxLayout="column" style="width: 100%">
-            <mat-form-field appearance="fill">
-              <mat-label>Ecrire votre commentaire</mat-label>
-              <textarea formControlName="body"
-                        matInput
-                        placeholder="200 caractères max !"
-                        cdkTextareaAutosize
-                        cdkAutosizeMinRows="1"
-                        cdkAutosizeMaxRows="5"
-              ></textarea>
-              <mat-error>Ecrire un commentaire est OBLIGATOIRE</mat-error>
-              <button matSuffix type="submit" mat-mini-fab color = "primary" (click)="publierComment(waste._id)" [disabled]="commentForm.invalid"><mat-icon>send</mat-icon></button>
-            </mat-form-field>
-          </form>
-        </div>
       </mat-card>
     </div>
 

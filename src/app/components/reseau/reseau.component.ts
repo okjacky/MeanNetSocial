@@ -44,12 +44,33 @@ export class ReseauComponent implements OnInit {
     });
 
     console.log('home:', this.currentUser.request);
-    this.userService.getAll()
+    console.log('home: F', this.currentUser.followers);
+    /**this.userService.getAll()
       .pipe(first()).subscribe(users => {
         this.userFromApi = users;
       // users.forEach((user => {this.userFromApi.push(user); }));
       // this.userFromApi.push(user);
-    });
+    });**/
+    this.getAmisList();
+  }
+
+  getAmisList() {
+    const arrayAmis = this.currentUser.followers;
+    console.log('arrayAmis', arrayAmis.length);
+    if (arrayAmis.length < 1) {
+      console.log('arrayAmis$');
+      this.userService.getAll()
+        .pipe(first()).subscribe(users => {
+        this.userFromApi = users;
+        // users.forEach((user => {this.userFromApi.push(user); }));
+        // this.userFromApi.push(user);
+      });
+    } else {
+      this.userService.getAmis(arrayAmis)
+        .pipe(first()).subscribe(users => {
+        this.userFromApi = users;
+      });
+    }
   }
 
   searchItem() {
@@ -86,6 +107,7 @@ export class ReseauComponent implements OnInit {
     this.userService.connexionRequest(request)
       .pipe(first()).subscribe((user) => {
         if (user) {
+          console.log('connexionRequest', user);
           this.dialog.open(DialogMdpOublieComponent, {
             height: '300px',
             width: '400px',
@@ -112,6 +134,7 @@ export class ReseauComponent implements OnInit {
     this.userService.connexionRequest(request)
       .pipe(first()).subscribe((user) => {
       if (user) {
+        console.log('connexionRequest delete', user);
         this.dialog.open(DialogMdpOublieComponent, {
           height: '300px',
           width: '400px',
