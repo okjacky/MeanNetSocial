@@ -26,7 +26,9 @@ module.exports = {
 };
 
 const transporter = nodemailer.createTransport({
-  service: 'Gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.GMAIL_LOGIN,
     pass: process.env.GMAIL_PWD
@@ -85,7 +87,7 @@ async function getEmail(emailm) {
         next(err);
       }
       try {
-        const url = `http://localhost:4200/changermdp/${emailToken}`;
+        const url = `https://meannetsocial.herokuapp.com/changermdp/${emailToken}`;
         transporter.sendMail({
           from: 'noreply@netSocial.com',
           to: user.email,
