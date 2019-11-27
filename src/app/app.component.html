@@ -13,10 +13,7 @@
           <mat-icon>face</mat-icon>
           <span>Votre Profil</span>
         </button>
-        <button mat-menu-item *ngIf="currentUser">
-          <mat-icon>edit</mat-icon>
-          <span>Posts</span>
-        </button>
+
         <button mat-menu-item routerLink="/reseau" *ngIf="currentUser">
           <mat-icon>people_alt</mat-icon>
           <span>Réseau</span>
@@ -26,7 +23,7 @@
           </mat-icon>
           <span>Messages</span>
         </button>
-        <button mat-menu-item>
+        <button mat-menu-item routerLink="/wsChat">
           <mat-icon>question_answer</mat-icon>
           <span>Chat</span>
         </button>
